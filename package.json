@@ -1,5 +1,5 @@
 {
-  "name": "@ml-lubich/md-pdf",
+  "name": "md-pdf",
   "version": "6.0.4",
   "description": "Modern, powerful CLI tool for converting Markdown files to PDF with Mermaid diagram support, syntax highlighting, and advanced customization.",
   "keywords": [
