@@ -1,5 +1,5 @@
 {
-  "name": "md-pdf",
+  "name": "@ml-lubich/md-pdf",
   "version": "6.0.4",
   "description": "Modern, powerful CLI tool for converting Markdown files to PDF with Mermaid diagram support, syntax highlighting, and advanced customization.",
   "keywords": [
@@ -46,7 +46,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ml-lubich/markpdf.git"
+    "url": "https://github.com/ml-lubich/md-pdf.git"
   },
   "homepage": "https://github.com/ml-lubich/markpdf#readme",
   "bugs": {
@@ -68,7 +68,7 @@
     "serve-handler": "^6.1.6"
   },
   "devDependencies": {
-    "md-pdf": "^6.0.4",
+    "@ml-lubich/md-pdf": "^6.0.4",
     "@types/listr": "^0.14.10",
     "@types/marked": "^4.3.0",
     "@types/semver": "^7.7.1",
