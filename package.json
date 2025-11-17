@@ -1,5 +1,5 @@
 {
-  "name": "md-pdf",
+  "name": "markpdf-cli",
   "version": "6.0.4",
   "description": "Modern, powerful CLI tool for converting Markdown files to PDF with Mermaid diagram support, syntax highlighting, and advanced customization.",
   "keywords": [
@@ -68,7 +68,7 @@
     "serve-handler": "^6.1.6"
   },
   "devDependencies": {
-    "@ml-lubich/md-pdf": "^6.0.4",
+    "markpdf-cli": "^6.0.4",
     "@types/listr": "^0.14.10",
     "@types/marked": "^4.3.0",
     "@types/semver": "^7.7.1",
