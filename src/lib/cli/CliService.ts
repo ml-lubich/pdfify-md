@@ -98,8 +98,6 @@ export class CliService {
 			} else {
 				await this.processFiles(files, mergedConfig, arguments_, cleanup);
 				// Cleanup is handled in processFiles finally block for files
-				// Wait a tiny bit to ensure all async operations complete
-				await new Promise(resolve => setImmediate(resolve));
 				return;
 			}
 		} catch (error) {
