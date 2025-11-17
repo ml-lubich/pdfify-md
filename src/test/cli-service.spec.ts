@@ -19,7 +19,7 @@ test('CliService should show version when --version flag is provided', async (t)
 	};
 
 	try {
-		await cliService.run({ '--version': true });
+		await cliService.run({ '--version': true, _: [] });
 		t.truthy(output);
 		t.true(output.length > 0);
 	} finally {
@@ -37,7 +37,7 @@ test('CliService should show help when --help flag is provided', async (t) => {
 	};
 
 	try {
-		await cliService.run({ '--help': true });
+		await cliService.run({ '--help': true, _: [] });
 		t.truthy(output);
 		t.true(output.includes('markpdf'));
 	} finally {
@@ -55,7 +55,7 @@ test('CliService should show help when no input provided', async (t) => {
 	};
 
 	try {
-		await cliService.run({});
+		await cliService.run({ _: [] });
 		t.truthy(output);
 		t.true(output.includes('markpdf'));
 	} finally {
@@ -64,10 +64,10 @@ test('CliService should show help when no input provided', async (t) => {
 });
 
 test('CliService should merge CLI arguments into config', async (t) => {
-	const cliService = new CliService();
 	const arguments_ = {
 		'--document-title': 'Test Title',
-		'--port': 3000,
+		'--port': '3000',
+		_: [] as string[],
 	};
 
 	// This test verifies the service can handle argument merging
@@ -82,7 +82,7 @@ test('CliService should handle config file loading', async (t) => {
 
 	// Test with non-existent config file (should handle gracefully)
 	await t.notThrowsAsync(async () => {
-		await cliService.run({ '--config-file': '/nonexistent/config.json' });
+		await cliService.run({ '--config-file': '/nonexistent/config.json', _: [] });
 	});
 });
 

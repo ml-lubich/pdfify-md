@@ -6,7 +6,7 @@
 
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0-brightgreen)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-blue.svg)](LICENSE)
 
 </div>
 
@@ -28,9 +28,9 @@
 - [Features](#-features)
 - [Quick Start](#-quick-start)
 - [Documentation](#-documentation)
+- [Examples](#-examples)
 - [Architecture](#-architecture)
 - [Development](#-development)
-- [Examples](#-examples)
 - [Security](#-security-considerations)
 - [Contributing](#-contributing)
 - [License](#-license)
@@ -55,7 +55,7 @@ npm link
 #### As a Dependency
 
 ```bash
-npm install markpdf
+npm install @ml-lubich/markpdf
 ```
 
 ### Basic Usage
@@ -89,7 +89,7 @@ flowchart TD
 ```
 ````
 
-Supported diagram types:
+**Supported diagram types:**
 - Flowcharts
 - Sequence Diagrams
 - Gantt Charts
@@ -98,10 +98,29 @@ Supported diagram types:
 - Entity Relationship Diagrams
 - And more!
 
+**Chart Configuration:**
+
+Control chart sizes and resolution. **These parameters do NOT conflict** - they work together:
+
+- `--mermaid-horizontal-width` - Max width for horizontal charts (default: 1600px)
+- `--mermaid-vertical-width` - Max width for vertical charts (default: 250px)  
+- `--mermaid-max-height` - Max height for vertical charts (default: 200px)
+- `--mermaid-resolution` - Image quality 1-4 (default: 3) - **does NOT change visual size, only PNG sharpness**
+
+```bash
+# One-time use (not persistent)
+markpdf file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4
+
+# Persistent: Use config file
+markpdf file.md --config-file markpdf.config.json
+```
+
+**For persistent settings, use a config file** (see [Chart Configuration Guide](docs/CHART-CONFIGURATION.md)).
+
 ### Programmatic API
 
 ```typescript
-import { mdToPdf } from 'markpdf';
+import { mdToPdf } from '@ml-lubich/markpdf';
 import { writeFileSync } from 'fs';
 
 async function convert() {
@@ -259,14 +278,14 @@ npm run lint
 
 ## 📝 Examples
 
-### Example 1: Basic Conversion
+### Quick Examples
 
+#### Basic Conversion
 ```bash
 markpdf README.md
 ```
 
-### Example 2: Custom Styling
-
+#### Custom Styling
 ```bash
 markpdf document.md \
   --stylesheet custom.css \
@@ -274,17 +293,26 @@ markpdf document.md \
   --highlight-style github
 ```
 
-### Example 3: Watch Mode
-
+#### Watch Mode
 ```bash
 markpdf --watch document.md
 ```
 
-### Example 4: Multiple Files
-
+#### Multiple Files
 ```bash
 markpdf chapter1.md chapter2.md chapter3.md
 ```
+
+### Example Files
+
+Check out the [`examples/`](./examples/) directory for complete example files:
+- **[Mermaid Diagrams Demo](./examples/demo-mermaid.md)** - Comprehensive example with various Mermaid diagram types
+
+More examples are available in [`src/test/`](./src/test/):
+- Basic markdown examples (`src/test/basic/`)
+- Mermaid diagram examples (`src/test/mermaid/`)
+- Nested directory structures (`src/test/nested/`)
+- Math formulas with MathJax (`src/test/mathjax/`)
 
 ## 🔒 Security Considerations
 
@@ -325,7 +353,22 @@ Please read our [Contributing Guide](CONTRIBUTING.md) for details on:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under a Non-Commercial License. All rights reserved.
+
+**Copyright (c) 2024 Misha Lubich (ml-lubich)**
+
+This software is provided for **educational and non-commercial use only**. 
+
+### Key Terms:
+- ✅ **Educational Use** - Free to use for teaching, learning, and research
+- ✅ **Personal Projects** - Free to use for personal, non-commercial projects
+- ✅ **Open Source** - Free to use in open source projects (non-commercial)
+- ❌ **Commercial Use** - Requires explicit written permission from the author
+- ✅ **Attribution Required** - All uses must credit Misha Lubich (ml-lubich) as the original author
+
+**For commercial licensing inquiries**, please contact: michaelle.lubich@gmail.com
+
+See the [LICENSE](LICENSE) file for full license terms.
 
 ## 👤 Author
 

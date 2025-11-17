@@ -39,6 +39,10 @@ export const cliFlags = arg({
 	'--as-html': Boolean,
 	'--config-file': String,
 	'--devtools': Boolean,
+	'--mermaid-horizontal-width': Number,
+	'--mermaid-vertical-width': Number,
+	'--mermaid-max-height': Number,
+	'--mermaid-resolution': Number,
 
 	// Aliases
 	'-h': '--help',

@@ -1,6 +1,6 @@
 import { expectType } from 'tsd';
 import { type HtmlOutput, type PdfOutput } from '../lib/generate-output.js';
-import { mdToPdf } from './...js';
+import { mdToPdf } from '../index.js';
 
 (async () => {
 	expectType<PdfOutput>(await mdToPdf({ content: 'foo' }));

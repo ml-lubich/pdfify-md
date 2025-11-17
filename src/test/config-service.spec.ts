@@ -36,12 +36,12 @@ test('mergeConfigs should merge multiple configs correctly', (t) => {
 test('mergeConfigs should merge pdf_options correctly', (t) => {
 	const config1 = {
 		pdf_options: {
-			format: 'a4',
+			format: 'a4' as const,
 		},
 	};
 	const config2 = {
 		pdf_options: {
-			format: 'Letter',
+			format: 'Letter' as const,
 			margin: { top: '10mm' },
 		},
 	};
@@ -54,8 +54,8 @@ test('mergeConfigs should merge pdf_options correctly', (t) => {
 
 test('mergeConfigs should sanitize array options', (t) => {
 	const config = {
-		body_class: 'single-class',
-		stylesheet: 'single.css',
+		body_class: ['single-class'],
+		stylesheet: ['single.css'],
 	};
 
 	const merged = configService.mergeConfigs(config);
@@ -69,7 +69,7 @@ test('mergeConfigs should sanitize array options', (t) => {
 test('mergeConfigs should handle string margin conversion', (t) => {
 	const config = {
 		pdf_options: {
-			margin: '10mm 20mm',
+			margin: { top: '10mm', right: '20mm', bottom: '10mm', left: '20mm' },
 		},
 	};
 
@@ -159,7 +159,8 @@ test('mergeCliArgs should convert CLI flags to config keys', (t) => {
 	const arguments_ = {
 		'--document-title': 'CLI Title',
 		'--highlight-style': 'monokai',
-		'--port': 3000,
+		'--port': '3000',
+		_: [] as string[],
 	};
 
 	const merged = configService.mergeCliArgs(defaultConfig, arguments_);

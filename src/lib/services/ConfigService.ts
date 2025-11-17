@@ -103,12 +103,35 @@ export class ConfigService implements IConfigService {
 	 * @param args - CLI arguments object
 	 * @returns Merged configuration
 	 */
-	public mergeCliArgs(config: Config, arguments_: Record<string, string | string[] | boolean>): Config {
+	public mergeCliArgs(config: Config, arguments_: Record<string, string | string[] | boolean | number>): Config {
 		const jsonArguments = new Set(['--marked-options', '--pdf-options', '--launch-options']);
 		const merged = { ...config };
 
+		// Initialize mermaid config if any mermaid flags are present
+		if (!merged.mermaid) {
+			merged.mermaid = {};
+		}
+
 		for (const [argumentKey, argumentValue] of Object.entries(arguments_)) {
 			if (!argumentKey.startsWith('--')) {
+				continue;
+			}
+
+			// Handle mermaid-specific flags
+			if (argumentKey === '--mermaid-horizontal-width' && typeof argumentValue === 'number') {
+				merged.mermaid.horizontal_width = argumentValue;
+				continue;
+			}
+			if (argumentKey === '--mermaid-vertical-width' && typeof argumentValue === 'number') {
+				merged.mermaid.vertical_width = argumentValue;
+				continue;
+			}
+			if (argumentKey === '--mermaid-max-height' && typeof argumentValue === 'number') {
+				merged.mermaid.max_height = argumentValue;
+				continue;
+			}
+			if (argumentKey === '--mermaid-resolution' && typeof argumentValue === 'number') {
+				merged.mermaid.resolution = argumentValue;
 				continue;
 			}
 

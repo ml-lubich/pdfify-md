@@ -55,6 +55,7 @@ export type IMermaidProcessor = {
 		baseDir: string,
 		markdownDir?: string,
 		serverPort?: number,
+		config?: Config,
 	): Promise<MermaidProcessResult>;
 	cleanup(imageFiles: string[]): Promise<void>;
 };

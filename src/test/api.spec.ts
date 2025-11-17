@@ -1,22 +1,24 @@
 import { readFileSync, unlinkSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
-import test, { before } from 'ava';
+import test from 'ava';
+// @ts-expect-error - pdfjs-dist types may not be available in test environment
 import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
+// @ts-expect-error - pdfjs-dist types may not be available in test environment
 import { type TextItem } from 'pdfjs-dist/types/src/display/api';
-import { mdToPdf } from './...js';
+import { mdToPdf } from '../index.js';
 
 const getPdfTextContent = async (content: Buffer) => {
 	const document = await getDocument({ data: content }).promise;
 	const page = await document.getPage(1);
 	const textContent = (await page.getTextContent()).items
-		.filter((item): item is TextItem => 'str' in item)
-		.map(({ str }) => str)
+		.filter((item: any): item is TextItem => 'str' in item)
+		.map(({ str }: any) => str)
 		.join('');
 
 	return textContent;
 };
 
-before(() => {
+test.before(() => {
 	const filesToDelete = [resolve(__dirname, 'basic', 'api-test.pdf'), resolve(__dirname, 'basic', 'api-test.html')];
 
 	for (const file of filesToDelete) {
@@ -44,7 +46,7 @@ test('compile the basic example to pdf and write to disk', async (t) => {
 		{ dest: resolve(__dirname, 'basic', 'api-test.pdf') },
 	);
 
-	t.is(basename(pdf.filename), 'api-test.pdf');
+	t.is(basename(pdf.filename ?? ''), 'api-test.pdf');
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.pdf'), 'utf-8'));
 });
@@ -74,7 +76,7 @@ test('compile the basic example to html and write to disk', async (t) => {
 		{ dest: resolve(__dirname, 'basic', 'api-test.html'), as_html: true },
 	);
 
-	t.is(basename(html.filename), 'api-test.html');
+	t.is(basename(html.filename ?? ''), 'api-test.html');
 
 	t.notThrows(() => readFileSync(resolve(__dirname, 'basic', 'api-test.html'), 'utf-8'));
 });

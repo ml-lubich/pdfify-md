@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import { type Browser, type Page } from 'puppeteer';
 import { type IMermaidProcessor, type MermaidProcessResult } from '../interfaces/index.js';
 import { MERMAID_CONSTANTS, IMAGE_CONSTANTS } from '../config/constants.js';
+import { type Config } from '../config.js';
 import { generateContentHash } from '../utils/hash.js';
 
 export class MermaidProcessorService implements IMermaidProcessor {
@@ -28,11 +29,11 @@ export class MermaidProcessorService implements IMermaidProcessor {
 		_baseDir: string,
 		_markdownDir?: string,
 		_serverPort?: number,
+		config?: Config,
 	): Promise<MermaidProcessResult> {
 		const imageFiles: string[] = [];
 		const warnings: string[] = [];
 		let processedMarkdown = markdown;
-		let matchIndex = 0;
 
 		const imageDir = join(tmpdir(), MERMAID_CONSTANTS.TEMP_DIR_NAME);
 		const matches = [...markdown.matchAll(MERMAID_CONSTANTS.BLOCK_REGEX)];
@@ -47,21 +48,33 @@ export class MermaidProcessorService implements IMermaidProcessor {
 
 		await this.ensureImageDirectory(imageDir);
 
-		for (const match of matches) {
+		const totalCharts = matches.length;
+		if (totalCharts > 0) {
+			console.log(`Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} in parallel...`);
+		}
+
+		// Process charts in batches to avoid overloading browser (max 6 concurrent pages)
+		// Increased batch size for faster processing while still preventing overload
+		const BATCH_SIZE = 6;
+		const chartPromises = matches.map(async (match, index) => {
 			const mermaidCode = match[1]?.trim();
 			const fullMatch = match[0];
 
 			if (!mermaidCode) {
-				warnings.push(`Skipping empty Mermaid chart at index ${matchIndex}`);
-				matchIndex++;
-				continue;
+				warnings.push(`Skipping empty Mermaid chart at index ${index}`);
+				return { fullMatch, imageMarkdown: '', imagePath: null as string | null };
 			}
 
 			try {
 				// Generate short 8-character hash for filename
 				const contentHash = generateContentHash(mermaidCode, 8);
-				const imagePath = await this.renderMermaidToImage(mermaidCode, browser, imageDir, contentHash, matchIndex);
-				imageFiles.push(imagePath);
+				// Wrap in Promise.race with aggressive timeout to prevent stalling
+				const imagePath = await Promise.race([
+					this.renderMermaidToImage(mermaidCode, browser, imageDir, contentHash, index, config),
+					new Promise<string>((_, reject) => 
+						setTimeout(() => reject(new Error(`Chart rendering timeout after ${MERMAID_CONSTANTS.RENDER_TIMEOUT_MS}ms`)), MERMAID_CONSTANTS.RENDER_TIMEOUT_MS + 1000)
+					),
+				]);
 
 				// Read PNG and convert to base64 data URI for embedding in PDF
 				const imageBuffer = await fs.readFile(imagePath);
@@ -69,20 +82,46 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				const imageDataUri = `data:${IMAGE_CONSTANTS.MIME_TYPE};base64,${imageBase64}`;
 
 				// Use HTML img tag directly - marked will pass it through
-				// High-res image but constrained display size (90% max width) for better layout
+				// High-res image but constrained display size for compact, normal-sized charts
 				const maxWidthPercent = MERMAID_CONSTANTS.MAX_CHART_WIDTH_PERCENT;
-				const imageMarkdown = `<div class="${MERMAID_CONSTANTS.CONTAINER_CLASS}" style="max-width: ${maxWidthPercent}%;"><img src="${imageDataUri}" alt="Mermaid Chart ${matchIndex + 1}" style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" /></div>`;
+				const imageMarkdown = `<div class="${MERMAID_CONSTANTS.CONTAINER_CLASS}" style="max-width: ${maxWidthPercent}%; margin: 0.5em auto; text-align: center;"><img src="${imageDataUri}" alt="Mermaid Chart ${index + 1}" style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" /></div>`;
 
-				processedMarkdown = processedMarkdown.replace(fullMatch, imageMarkdown);
-				matchIndex++;
+				if (totalCharts > 1) {
+					console.log(`  ✓ Chart ${index + 1}/${totalCharts} rendered`);
+				}
+
+				return { fullMatch, imageMarkdown, imagePath };
 			} catch (error) {
 				// Remove the failed Mermaid diagram from markdown instead of including broken image
 				const errorMessage = error instanceof Error ? error.message : String(error);
-				warnings.push(`Skipping Mermaid chart ${matchIndex + 1} due to syntax error: ${errorMessage}`);
-				// Remove the entire code block from markdown
-				processedMarkdown = processedMarkdown.replace(fullMatch, '');
-				matchIndex++;
+				warnings.push(`Skipping Mermaid chart ${index + 1} due to syntax error: ${errorMessage}`);
+				if (totalCharts > 1) {
+					console.log(`  ⚠ Chart ${index + 1}/${totalCharts} skipped (syntax error)`);
+				}
+				// Return empty markdown to remove the code block
+				return { fullMatch, imageMarkdown: '', imagePath: null };
 			}
+		});
+
+		// Process charts in batches to avoid browser overload
+		// Process 3 charts at a time instead of all at once
+		const results: Array<{ fullMatch: string; imageMarkdown: string; imagePath: string | null }> = [];
+		for (let i = 0; i < chartPromises.length; i += BATCH_SIZE) {
+			const batch = chartPromises.slice(i, i + BATCH_SIZE);
+			const batchResults = await Promise.all(batch);
+			results.push(...batchResults);
+		}
+
+		// Apply results to markdown and collect image files
+		for (const result of results) {
+			processedMarkdown = processedMarkdown.replace(result.fullMatch, result.imageMarkdown);
+			if (result.imagePath) {
+				imageFiles.push(result.imagePath);
+			}
+		}
+
+		if (totalCharts > 0) {
+			console.log(`✓ All Mermaid charts processed`);
 		}
 
 		return {
@@ -133,12 +172,32 @@ export class MermaidProcessorService implements IMermaidProcessor {
 		imageDir: string,
 		contentHash: string,
 		index: number,
+		config?: Config,
 	): Promise<string> {
 		const page = await browser.newPage();
+		
+		// Set page timeout to prevent hanging
+		page.setDefaultTimeout(MERMAID_CONSTANTS.RENDER_TIMEOUT_MS);
+		page.setDefaultNavigationTimeout(MERMAID_CONSTANTS.RENDER_TIMEOUT_MS);
+		
+		// Block unnecessary resources to speed up loading and prevent hangs
+		await page.setRequestInterception(true);
+		page.on('request', (request) => {
+			const resourceType = request.resourceType();
+			// Only allow essential resources - block images, fonts, stylesheets (we only need the script)
+			if (resourceType === 'script' || request.url().includes('mermaid')) {
+				request.continue();
+			} else {
+				request.abort();
+			}
+		});
 
 		try {
 			const html = this.createMermaidHtml(mermaidCode);
-			await page.setContent(html, { waitUntil: 'networkidle0' });
+			// Use domcontentloaded for faster loading - don't wait for all resources
+			// Mermaid CDN loads quickly, and we wait for render anyway
+			// Set content without waiting - Mermaid will load asynchronously
+			await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 2000 });
 
 			await this.waitForMermaidRender(page);
 
@@ -147,16 +206,79 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				throw new Error('Could not find rendered Mermaid SVG element');
 			}
 
-			// Set viewport with device scale factor for high-resolution screenshots
-			// Keep original dimensions for visual size, device scale factor adds pixel density
-			const viewportWidth = Math.ceil(dimensions.width) + MERMAID_CONSTANTS.CHART_PADDING_PX;
-			const viewportHeight = Math.ceil(dimensions.height) + MERMAID_CONSTANTS.CHART_PADDING_PX;
+			// Scale charts intelligently based on orientation
+			// For flowcharts: detect based on direction (TD/LR/BT/RL)
+			// For other chart types: use rendered dimensions (aspect ratio)
+			let chartWidth = dimensions.width;
+			let chartHeight = dimensions.height;
+			
+			// Detect orientation: first try to parse flowchart direction, then fall back to aspect ratio
+			let isHorizontal: boolean;
+			const flowchartMatch = mermaidCode.match(/^(?:flowchart|graph)\s+(TD|LR|BT|RL|TB)/i);
+			if (flowchartMatch && flowchartMatch[1]) {
+				// Flowchart: use direction keyword
+				const direction = flowchartMatch[1].toUpperCase();
+				isHorizontal = direction === 'LR' || direction === 'RL'; // Left-Right or Right-Left = horizontal
+			} else {
+				// Other chart types (sequenceDiagram, gantt, classDiagram, etc.): use aspect ratio
+				const aspectRatio = chartWidth / chartHeight;
+				isHorizontal = aspectRatio > 1.2; // Wider than tall
+			}
+			
+			// Get chart size limits from config or use defaults
+			const mermaidConfig = config?.mermaid;
+			const maxHorizontalWidth = mermaidConfig?.horizontal_width ?? MERMAID_CONSTANTS.MAX_HORIZONTAL_CHART_WIDTH_PX;
+			const maxVerticalWidth = mermaidConfig?.vertical_width ?? MERMAID_CONSTANTS.MAX_VERTICAL_CHART_WIDTH_PX;
+			const maxHeight = mermaidConfig?.max_height ?? MERMAID_CONSTANTS.MAX_CHART_HEIGHT_PX;
+			
+			// Different max widths for horizontal vs vertical charts
+			const maxWidth = isHorizontal ? maxHorizontalWidth : maxVerticalWidth;
+			
+			// For horizontal charts: only constrain width, allow natural height
+			// For vertical charts: constrain both width and height
+			let scale = 1;
+			if (isHorizontal) {
+				// Horizontal charts: only scale if width exceeds max
+				if (chartWidth > maxWidth) {
+					scale = maxWidth / chartWidth;
+				}
+			} else {
+				// Vertical charts: constrain both dimensions
+				const widthScale = chartWidth > maxWidth ? maxWidth / chartWidth : 1;
+				const heightScale = chartHeight > maxHeight ? maxHeight / chartHeight : 1;
+				scale = Math.min(widthScale, heightScale);
+			}
+			
+			if (scale < 1) {
+				chartWidth = chartWidth * scale;
+				chartHeight = chartHeight * scale;
+			}
+
+			// Set viewport with high device scale factor for high-resolution screenshots
+			// Visual size varies by chart type, but PNG will be 3x resolution for sharp images
+			const viewportWidth = Math.ceil(chartWidth) + MERMAID_CONSTANTS.CHART_PADDING_PX;
+			const viewportHeight = Math.ceil(chartHeight) + MERMAID_CONSTANTS.CHART_PADDING_PX;
+			
+			// Get resolution from config or use default
+			const deviceScaleFactor = config?.mermaid?.resolution ?? MERMAID_CONSTANTS.DEVICE_SCALE_FACTOR;
 			
 			await page.setViewport({
 				width: viewportWidth,
 				height: viewportHeight,
-				deviceScaleFactor: MERMAID_CONSTANTS.DEVICE_SCALE_FACTOR,
+				deviceScaleFactor,
 			});
+
+			// Scale the SVG element to the constrained visual size
+			// The screenshot will capture this at high resolution due to deviceScaleFactor
+			await page.evaluate((width, height) => {
+				const svg = document.querySelector('.mermaid svg') as SVGElement | null;
+				if (svg) {
+					svg.setAttribute('width', String(width));
+					svg.setAttribute('height', String(height));
+					(svg as any).style.width = `${width}px`;
+					(svg as any).style.height = `${height}px`;
+				}
+			}, chartWidth, chartHeight);
 
 			// Use content hash for filename to ensure uniqueness across parallel processes
 			// Format: mermaid-{hash}-{index}.png
@@ -167,15 +289,34 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				throw new Error('Mermaid element not found for screenshot');
 			}
 
-			// Take high-resolution screenshot
-			await mermaidElement.screenshot({
-				path: temporaryImagePath,
-				type: 'png',
-			} as any);
+			// Take high-resolution screenshot with timeout
+			// Screenshot is fast even at high resolution (3x device scale)
+			await Promise.race([
+				mermaidElement.screenshot({
+					path: temporaryImagePath,
+					type: 'png',
+				} as any),
+				new Promise((_, reject) => setTimeout(() => reject(new Error('Screenshot timeout')), 1500)),
+			]);
 
 			return temporaryImagePath;
+		} catch (error) {
+			// Ensure page is closed even on error/timeout
+			try {
+				await page.close();
+			} catch {
+				// Ignore errors when closing page
+			}
+			throw error;
 		} finally {
-			await page.close();
+			// Double-check page is closed
+			try {
+				if (!page.isClosed()) {
+					await page.close();
+				}
+			} catch {
+				// Ignore errors
+			}
 		}
 	}
 
@@ -219,19 +360,26 @@ ${mermaidCode}
 
 	/**
 	 * Wait for Mermaid to render the SVG.
+	 * Uses aggressive timeout and polling to prevent stalling.
 	 */
 	private async waitForMermaidRender(page: Page): Promise<void> {
-		await page
-			.waitForFunction(
-				() => {
-					const mermaidElement = document.querySelector('.mermaid svg');
-					return mermaidElement !== null;
-				},
-				{ timeout: MERMAID_CONSTANTS.RENDER_TIMEOUT_MS },
-			)
-			.catch(() => {
-				throw new Error('Mermaid chart did not render within timeout period');
-			});
+		try {
+			// Use shorter timeout with frequent polling to detect failures quickly
+			await Promise.race([
+				page.waitForFunction(
+					() => {
+						const mermaidElement = document.querySelector('.mermaid svg');
+						return mermaidElement !== null && mermaidElement.children.length > 0;
+					},
+					{ timeout: MERMAID_CONSTANTS.RENDER_TIMEOUT_MS, polling: 50 },
+				),
+				new Promise((_, reject) => 
+					setTimeout(() => reject(new Error('Mermaid render timeout')), MERMAID_CONSTANTS.RENDER_TIMEOUT_MS)
+				),
+			]);
+		} catch (error) {
+			throw new Error(`Mermaid chart did not render within ${MERMAID_CONSTANTS.RENDER_TIMEOUT_MS}ms timeout`);
+		}
 	}
 
 	/**

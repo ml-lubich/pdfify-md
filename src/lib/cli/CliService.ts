@@ -204,6 +204,7 @@ export class CliService {
 			task: async () => {
 				try {
 					await convertMdToPdf({ path: file }, config, { args: arguments_ });
+					// File path is printed by ConverterService after successful write
 				} catch (error) {
 					// Format error message for user
 					const errorMessage = this.formatErrorMessage(error, file);

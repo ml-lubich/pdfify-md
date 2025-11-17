@@ -15,7 +15,7 @@ const helpText = `
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═════╝ ╚═╝     
                                                            
 `)}
-  ${chalk.bold('$ markpdf')} [options] path/to/file.md
+  ${chalk.bold('$ md-pdf')} [options] path/to/file.md
 
   ${chalk.dim.underline.bold('Options:')}
 
@@ -41,48 +41,56 @@ const helpText = `
     --as-html ${chalk.dim('................')} Output as HTML instead
     --config-file ${chalk.dim('............')} Path to a JSON or JS configuration file
     --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF
+    --mermaid-horizontal-width ${chalk.dim('..')} Max width for horizontal charts (default: 1600)
+    --mermaid-vertical-width ${chalk.dim('....')} Max width for vertical charts (default: 250)
+    --mermaid-max-height ${chalk.dim('.......')} Max height for charts (default: 200)
+    --mermaid-resolution ${chalk.dim('........')} Image resolution scale factor 1-4 (default: 3)
 
   ${chalk.dim.underline.bold('Examples:')}
 
   ${chalk.gray('–')} Convert ./file.md and save to ./file.pdf
 
-    ${chalk.cyan('$ markpdf file.md')}
+    ${chalk.cyan('$ md-pdf file.md')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory
 
-    ${chalk.cyan('$ markpdf ./*.md')}
+    ${chalk.cyan('$ md-pdf ./*.md')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory recursively
 
-    ${chalk.cyan('$ markpdf ./**/*.md')}
+    ${chalk.cyan('$ md-pdf ./**/*.md')}
 
   ${chalk.gray('–')} Convert and enable watch mode
 
-    ${chalk.cyan('$ markpdf ./*.md -w')}
+    ${chalk.cyan('$ md-pdf ./*.md -w')}
 
   ${chalk.gray('–')} Convert and enable watch mode with custom options
 
-    ${chalk.cyan('$ markpdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
+    ${chalk.cyan('$ md-pdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
 
   ${chalk.gray('–')} Convert path/to/file.md with a different base directory
 
-    ${chalk.cyan('$ markpdf path/to/file.md --basedir path')}
+    ${chalk.cyan('$ md-pdf path/to/file.md --basedir path')}
 
   ${chalk.gray('–')} Convert file.md using custom-markdown.css
 
-    ${chalk.cyan('$ markpdf file.md --stylesheet custom-markdown.css')}
+    ${chalk.cyan('$ md-pdf file.md --stylesheet custom-markdown.css')}
 
   ${chalk.gray('–')} Convert file.md using the Monokai theme for code highlighting
 
-    ${chalk.cyan('$ markpdf file.md --highlight-style monokai')}
+    ${chalk.cyan('$ md-pdf file.md --highlight-style monokai')}
 
   ${chalk.gray('–')} Convert file.md using custom page options
 
-    ${chalk.cyan('$ markpdf file.md --pdf-options \'{ "format": "Letter" }\'')}
+    ${chalk.cyan('$ md-pdf file.md --pdf-options \'{ "format": "Letter" }\'')}
 
   ${chalk.gray('–')} Convert file.md but save the intermediate HTML instead
 
-    ${chalk.cyan('$ markpdf file.md --as-html')}
+    ${chalk.cyan('$ md-pdf file.md --as-html')}
+
+  ${chalk.gray('–')} Convert with custom Mermaid chart sizes
+
+    ${chalk.cyan('$ md-pdf file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4')}
 `;
 
 export const help = (): void => console.log(helpText);

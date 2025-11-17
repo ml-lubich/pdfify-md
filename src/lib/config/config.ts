@@ -179,6 +179,32 @@ type BasicConfig = {
 	 * Port number for the HTTP server. Automatically assigned if not provided.
 	 */
 	port?: number;
+	/**
+	 * Mermaid chart configuration.
+	 */
+	mermaid?: {
+		/**
+		 * Maximum width for horizontal charts (wide charts like sequence diagrams).
+		 * Default: 1600
+		 */
+		horizontal_width?: number;
+		/**
+		 * Maximum width for vertical charts (tall charts like vertical flowcharts).
+		 * Default: 250
+		 */
+		vertical_width?: number;
+		/**
+		 * Maximum height for charts (prevents vertical charts from spanning pages).
+		 * Default: 200
+		 */
+		max_height?: number;
+		/**
+		 * Device scale factor for high-resolution screenshots (1-4).
+		 * Higher values = sharper images but larger file size.
+		 * Default: 3
+		 */
+		resolution?: number;
+	};
 };
 
 type PuppeteerLaunchOptions = Parameters<typeof launch>[0];

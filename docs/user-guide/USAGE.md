@@ -1,6 +1,6 @@
 # Usage Guide
 
-Comprehensive guide to using markpdf for converting Markdown files to PDF and HTML.
+Comprehensive guide to using md-pdf for converting Markdown files to PDF and HTML.
 
 ## 📋 Table of Contents
 
@@ -27,25 +27,25 @@ Comprehensive guide to using markpdf for converting Markdown files to PDF and HT
 ### Global Installation
 
 ```bash
-npm install -g @ml-lubich/markpdf
+npm install -g md-pdf
 ```
 
-After installation, use `markpdf` from anywhere:
+After installation, use `md-pdf` from anywhere:
 
 ```bash
-markpdf document.md
+md-pdf document.md
 ```
 
 ### Local Installation (as Dependency)
 
 ```bash
-npm install @ml-lubich/markpdf
+npm install md-pdf
 ```
 
 Then use in your code:
 
 ```typescript
-import { mdToPdf } from '@ml-lubich/markpdf';
+import { mdToPdf } from 'md-pdf';
 
 const pdf = await mdToPdf({ path: 'document.md' });
 ```
@@ -66,20 +66,20 @@ npm link
 
 ```bash
 # Convert single file
-markpdf document.md
+md-pdf document.md
 
 # Convert multiple files
-markpdf *.md
-markpdf file1.md file2.md file3.md
+md-pdf *.md
+md-pdf file1.md file2.md file3.md
 
 # Watch mode
-markpdf document.md --watch
+md-pdf document.md --watch
 
 # Show help
-markpdf --help
+md-pdf --help
 
 # Show version
-markpdf --version
+md-pdf --version
 ```
 
 ### Input Options
@@ -87,14 +87,14 @@ markpdf --version
 #### File Input
 
 ```bash
-markpdf path/to/document.md
+md-pdf path/to/document.md
 ```
 
 #### Stdin Input
 
 ```bash
-cat document.md | markpdf > output.pdf
-echo "# Hello World" | markpdf > output.pdf
+cat document.md | md-pdf > output.pdf
+echo "# Hello World" | md-pdf > output.pdf
 ```
 
 ### Output Options
@@ -104,13 +104,13 @@ echo "# Hello World" | markpdf > output.pdf
 Creates PDF file with same name as input:
 
 ```bash
-markpdf document.md  # Creates document.pdf
+md-pdf document.md  # Creates document.pdf
 ```
 
 #### HTML Output
 
 ```bash
-markpdf document.md --as-html  # Creates document.html
+md-pdf document.md --as-html  # Creates document.html
 ```
 
 #### Custom Output Path
@@ -134,9 +134,9 @@ Configuration is merged in this order (later sources override earlier ones):
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `-h, --help` | Show help | `markpdf --help` |
-| `-v, --version` | Show version | `markpdf --version` |
-| `-w, --watch` | Watch mode | `markpdf doc.md --watch` |
+| `-h, --help` | Show help | `md-pdf --help` |
+| `-v, --version` | Show version | `md-pdf --version` |
+| `-w, --watch` | Watch mode | `md-pdf doc.md --watch` |
 
 #### Styling Options
 
@@ -222,7 +222,7 @@ module.exports = {
 Use it:
 
 ```bash
-markpdf document.md --config-file config.json
+md-pdf document.md --config-file config.json
 ```
 
 ## Features
@@ -256,7 +256,7 @@ graph TD
 Automatic syntax highlighting for code blocks using highlight.js:
 
 ```bash
-markpdf document.md --highlight-style github
+md-pdf document.md --highlight-style github
 ```
 
 Popular themes: `github`, `monokai`, `vs`, `atom-one-dark`, `dracula`, `github-dark`.
@@ -266,19 +266,19 @@ Popular themes: `github`, `monokai`, `vs`, `atom-one-dark`, `dracula`, `github-d
 #### Stylesheet Files
 
 ```bash
-markpdf document.md --stylesheet custom.css --stylesheet theme.css
+md-pdf document.md --stylesheet custom.css --stylesheet theme.css
 ```
 
 #### Inline CSS
 
 ```bash
-markpdf document.md --css "body { font-family: 'Georgia', serif; font-size: 12pt; }"
+md-pdf document.md --css "body { font-family: 'Georgia', serif; font-size: 12pt; }"
 ```
 
 #### Remote Stylesheets
 
 ```bash
-markpdf document.md --stylesheet https://cdn.example.com/style.css
+md-pdf document.md --stylesheet https://cdn.example.com/style.css
 ```
 
 ### Watch Mode
@@ -286,7 +286,7 @@ markpdf document.md --stylesheet https://cdn.example.com/style.css
 Automatically regenerate PDF when files change:
 
 ```bash
-markpdf document.md --watch
+md-pdf document.md --watch
 ```
 
 Press `Ctrl+C` to stop watching.
@@ -296,13 +296,13 @@ Press `Ctrl+C` to stop watching.
 ### Basic Conversion
 
 ```bash
-markpdf README.md
+md-pdf README.md
 ```
 
 ### Custom Styling
 
 ```bash
-markpdf document.md \
+md-pdf document.md \
   --stylesheet custom.css \
   --css "body { font-family: 'Georgia', serif; }" \
   --highlight-style monokai
@@ -311,47 +311,47 @@ markpdf document.md \
 ### Custom PDF Format
 
 ```bash
-markpdf document.md --pdf-options '{"format": "Letter", "landscape": true, "margin": "1in"}'
+md-pdf document.md --pdf-options '{"format": "Letter", "landscape": true, "margin": "1in"}'
 ```
 
 ### Watch Mode
 
 ```bash
-markpdf document.md --watch
+md-pdf document.md --watch
 ```
 
 ### Multiple Files with Config
 
 ```bash
-markpdf chapter*.md --config-file book-config.json
+md-pdf chapter*.md --config-file book-config.json
 ```
 
 ### Stdin to Stdout
 
 ```bash
-cat document.md | markpdf > output.pdf
+cat document.md | md-pdf > output.pdf
 ```
 
 ### Generate HTML
 
 ```bash
-markpdf document.md --as-html
+md-pdf document.md --as-html
 ```
 
 ## Troubleshooting
 
 ### Command Not Found
 
-**Issue:** `zsh: command not found: markpdf`
+**Issue:** `zsh: command not found: md-pdf`
 
 **Solutions:**
-1. Install globally: `npm install -g @ml-lubich/markpdf`
-2. Use npx: `npx @ml-lubich/markpdf document.md`
+1. Install globally: `npm install -g md-pdf`
+2. Use npx: `npx md-pdf document.md`
 3. For development: `npm link` after building
 
 ### Permission Denied
 
-**Issue:** `zsh: permission denied: markpdf`
+**Issue:** `zsh: permission denied: md-pdf`
 
 **Solutions:**
 ```bash
@@ -369,7 +369,7 @@ npm link
 
 **Solution:**
 ```bash
-markpdf document.md --port 3001
+md-pdf document.md --port 3001
 ```
 
 ### Mermaid Charts Not Showing
@@ -394,7 +394,7 @@ markpdf document.md --port 3001
 **Solutions:**
 - Wait longer (first run can be slow)
 - Check internet connection
-- Try with simpler file first: `markpdf src/test/basic/test.md`
+- Try with simpler file first: `md-pdf src/test/basic/test.md`
 
 ### File Not Found
 
@@ -403,10 +403,10 @@ markpdf document.md --port 3001
 **Solution:**
 ```bash
 # Use absolute path
-markpdf /full/path/to/document.md
+md-pdf /full/path/to/document.md
 
 # Or relative path
-markpdf ./document.md
+md-pdf ./document.md
 ```
 
 ## Related Documentation

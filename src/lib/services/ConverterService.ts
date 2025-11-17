@@ -300,6 +300,7 @@ export class ConverterService {
 				config.basedir,
 				markdownDir,
 				config.port,
+				config,
 			);
 
 			// Log warnings
@@ -349,6 +350,7 @@ export class ConverterService {
 
 	/**
 	 * Write output to file or stdout.
+	 * Prints the output file path after successful write.
 	 */
 	private async writeOutput(output: ConversionOutput): Promise<void> {
 		if (!output.filename) {
@@ -363,7 +365,34 @@ export class ConverterService {
 			}
 		} else {
 			await this.fileService.writeFile(output.filename, output.content);
+			this.printOutputPath(output.filename, output);
 		}
+	}
+
+	/**
+	 * Print the output file path to console.
+	 * Follows Clean Code principles: single responsibility, clear naming, small functions.
+	 *
+	 * @param filePath - Path to the generated file (can be relative or absolute)
+	 * @param output - The conversion output to determine file type
+	 */
+	private printOutputPath(filePath: string, output: ConversionOutput): void {
+		const fileType = this.determineFileType(output);
+		// Resolve to absolute path for clarity - resolve() handles both relative and absolute paths correctly
+		// If path is already absolute, resolve returns it unchanged; if relative, resolves from cwd
+		const resolvedPath = resolve(filePath);
+		console.log(`✓ Generated ${fileType}: ${resolvedPath}`);
+	}
+
+	/**
+	 * Determine file type from output content.
+	 * Small, focused function following Clean Code principles.
+	 *
+	 * @param output - The conversion output
+	 * @returns File type string ('PDF' or 'HTML')
+	 */
+	private determineFileType(output: ConversionOutput): string {
+		return Buffer.isBuffer(output.content) ? 'PDF' : 'HTML';
 	}
 
 	/**

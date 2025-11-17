@@ -15,13 +15,13 @@ Get started with markpdf in minutes. This guide covers the essential commands an
 ### Install from npm
 
 ```bash
-npm install -g @ml-lubich/markpdf
+npm install -g md-pdf
 ```
 
 ### Install as a dependency
 
 ```bash
-npm install @ml-lubich/markpdf
+npm install md-pdf
 ```
 
 ### For development
@@ -39,7 +39,7 @@ npm link
 ### Convert a Single File
 
 ```bash
-markpdf document.md
+md-pdf document.md
 ```
 
 This creates `document.pdf` in the same directory.
@@ -47,14 +47,14 @@ This creates `document.pdf` in the same directory.
 ### Convert Multiple Files
 
 ```bash
-markpdf *.md
-markpdf chapter1.md chapter2.md chapter3.md
+md-pdf *.md
+md-pdf chapter1.md chapter2.md chapter3.md
 ```
 
 ### Watch Mode (Auto-regenerate)
 
 ```bash
-markpdf document.md --watch
+md-pdf document.md --watch
 ```
 
 Automatically regenerates the PDF when the file changes.
@@ -62,8 +62,8 @@ Automatically regenerates the PDF when the file changes.
 ### Convert from Stdin
 
 ```bash
-cat document.md | markpdf > output.pdf
-echo "# Hello" | markpdf > output.pdf
+cat document.md | md-pdf > output.pdf
+echo "# Hello" | md-pdf > output.pdf
 ```
 
 ## Key Features
@@ -101,7 +101,7 @@ The tool automatically:
 Automatic syntax highlighting for code blocks:
 
 ```bash
-markpdf document.md --highlight-style monokai
+md-pdf document.md --highlight-style monokai
 ```
 
 Available themes: `github`, `monokai`, `vs`, `atom-one-dark`, `dracula`, etc.
@@ -111,7 +111,7 @@ Available themes: `github`, `monokai`, `vs`, `atom-one-dark`, `dracula`, etc.
 Add custom CSS:
 
 ```bash
-markpdf document.md --stylesheet custom.css --css "body { font-size: 12pt; }"
+md-pdf document.md --stylesheet custom.css --css "body { font-size: 12pt; }"
 ```
 
 ## Common Commands
@@ -119,25 +119,25 @@ markpdf document.md --stylesheet custom.css --css "body { font-size: 12pt; }"
 ### Get Help
 
 ```bash
-markpdf --help
+md-pdf --help
 ```
 
 ### Show Version
 
 ```bash
-markpdf --version
+md-pdf --version
 ```
 
 ### Custom PDF Format
 
 ```bash
-markpdf document.md --pdf-options '{"format": "Letter", "margin": "20mm"}'
+md-pdf document.md --pdf-options '{"format": "Letter", "margin": "20mm"}'
 ```
 
 ### Generate HTML Instead of PDF
 
 ```bash
-markpdf document.md --as-html
+md-pdf document.md --as-html
 ```
 
 ### Front Matter Configuration
@@ -169,9 +169,9 @@ highlight_style: monokai
 
 ### Command Not Found
 
-If `markpdf` is not found:
-- Ensure it's installed: `npm install -g @ml-lubich/markpdf`
-- Or use: `npx @ml-lubich/markpdf` instead
+If `md-pdf` is not found:
+- Ensure it's installed: `npm install -g md-pdf`
+- Or use: `npx md-pdf` instead
 - For development: run `npm link` after building
 
 ### Permission Denied
@@ -186,7 +186,7 @@ npm link
 
 Specify a different port:
 ```bash
-markpdf document.md --port 3001
+md-pdf document.md --port 3001
 ```
 
 ### Mermaid Charts Not Rendering

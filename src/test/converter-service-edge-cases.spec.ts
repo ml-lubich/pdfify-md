@@ -107,7 +107,7 @@ test('ConverterService should handle very long markdown content', async (t) => {
 	} finally {
 		await serverService.stop();
 	}
-}).timeout(30_000);
+}).timeout = 30_000;
 
 test('ConverterService should handle markdown with many code blocks', async (t) => {
 	const converter = createConverterService();
@@ -127,7 +127,7 @@ test('ConverterService should handle markdown with many code blocks', async (t) 
 	} finally {
 		await serverService.stop();
 	}
-}).timeout(30_000);
+}).timeout = 30_000;
 
 // ============================================================================
 // Edge Cases - Special Characters
@@ -330,7 +330,7 @@ gantt
 	} finally {
 		await serverService.stop();
 	}
-}).timeout(30_000);
+}).timeout = 30_000;
 
 // ============================================================================
 // Edge Cases - File Operations
@@ -657,7 +657,7 @@ test('ConverterService should handle large markdown files efficiently', async (t
 	} finally {
 		await serverService.stop();
 	}
-}).timeout(90_000);
+}).timeout = 90_000;
 
 // ============================================================================
 // Integration Tests
@@ -709,4 +709,4 @@ graph TD
 	} finally {
 		await serverService.stop();
 	}
-}).timeout(30_000);
+}).timeout = 30_000;

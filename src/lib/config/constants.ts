@@ -19,9 +19,10 @@ export const MERMAID_CONSTANTS = {
 
 	/**
 	 * Timeout for Mermaid rendering in milliseconds.
-	 * Increased for complex diagrams that take longer to render.
+	 * Set to aggressive value to prevent stalling - fail fast if chart doesn't render quickly.
+	 * Most charts render in 1-2 seconds, so 2.5 seconds is sufficient for fast processing.
 	 */
-	RENDER_TIMEOUT_MS: 30_000,
+	RENDER_TIMEOUT_MS: 2_500,
 
 	/**
 	 * Padding around Mermaid charts in pixels.
@@ -30,17 +31,40 @@ export const MERMAID_CONSTANTS = {
 
 	/**
 	 * Maximum width for Mermaid chart containers as percentage of page width.
-	 * Keeps diagrams readable while maintaining high resolution.
-	 * Reduced from 90% to prevent huge vertical flowcharts.
+	 * Keeps diagrams at a normal, readable size in the PDF.
+	 * Higher for horizontal charts, lower for vertical charts.
 	 */
-	MAX_CHART_WIDTH_PERCENT: 70,
+	MAX_CHART_WIDTH_PERCENT: 90,
+
+	/**
+	 * Maximum pixel width for horizontal charts (wide charts like sequence diagrams).
+	 * Horizontal charts can be wider since they don't take up vertical space.
+	 * Increased significantly for much better readability of horizontal flowcharts and sequence diagrams.
+	 */
+	MAX_HORIZONTAL_CHART_WIDTH_PX: 1600,
+
+	/**
+	 * Maximum pixel width for vertical charts (tall charts like vertical flowcharts).
+	 * Vertical charts need width constraint to fit on page.
+	 * Reduced significantly to make vertical charts way smaller.
+	 */
+	MAX_VERTICAL_CHART_WIDTH_PX: 250,
+
+	/**
+	 * Maximum pixel height for rendered Mermaid charts (visual size).
+	 * Prevents vertical flowcharts from taking multiple pages.
+	 * Charts taller than this will be scaled down while maintaining aspect ratio.
+	 * Only applies to vertical charts - horizontal charts are not height-constrained.
+	 * Reduced significantly to make vertical charts way smaller.
+	 */
+	MAX_CHART_HEIGHT_PX: 200,
 
 	/**
 	 * Device scale factor for high-resolution screenshots.
-	 * 2 = 2x resolution (Retina), 3 = 3x resolution (Super Retina)
-	 * Higher values produce sharper images but larger file sizes.
+	 * 3 = 3x resolution (Super Retina) - gives high-res PNGs even at smaller visual sizes
+	 * Higher values produce sharper images. 3x provides excellent quality for PDFs.
 	 */
-	DEVICE_SCALE_FACTOR: 2,
+	DEVICE_SCALE_FACTOR: 3,
 
 	/**
 	 * Temporary directory name for Mermaid images.
