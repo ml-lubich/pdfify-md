@@ -46,7 +46,7 @@ export class CliService {
 	 * @param config - Base configuration
 	 */
 	public async run(arguments_: CliArgs, config: Config = defaultConfig): Promise<void> {
-		process.title = 'markpdf';
+		process.title = 'pdfify-md';
 
 		// Validate Node version
 		if (!validateNodeVersion()) {

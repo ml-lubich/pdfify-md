@@ -64,13 +64,9 @@ async function main() {
 		const errorMessage = error instanceof Error ? error.message : String(error);
 		console.error(`\n${chalk.red('✖ Error:')} ${errorMessage}\n`);
 		process.exitCode = 1;
-	} finally {
-		// Force exit after a short delay to ensure cleanup completes
-		// Use setImmediate to allow cleanup to finish
-		setImmediate(() => {
-			process.exit(process.exitCode || 0);
-		});
 	}
+	// Don't force exit - let the process exit naturally after cleanup
+	// Watch mode needs to keep running, and normal mode will exit after cleanup
 }
 
 // Execute main function
