@@ -104,16 +104,18 @@ export class ServerService implements IServerService {
 			};
 
 			// Close all connections first, then close server
-			serverToClose.closeAllConnections?.();
+			if (typeof serverToClose.closeAllConnections === 'function') {
+				serverToClose.closeAllConnections();
+			}
 			
 			serverToClose.close(() => {
 				doResolve();
 			});
 
-			// Force close after timeout to prevent hanging (reduced to 200ms)
+			// Force close after timeout to prevent hanging
 			setTimeout(() => {
 				doResolve();
-			}, 200);
+			}, 100);
 		});
 	}
 

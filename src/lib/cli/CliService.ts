@@ -4,6 +4,7 @@
  */
 
 import path from 'node:path';
+import { basename } from 'node:path';
 import chalk from 'chalk';
 import { watch } from 'chokidar';
 import getPort from 'get-port';
@@ -197,19 +198,23 @@ export class CliService {
 		arguments_: CliArgs,
 		cleanup: () => Promise<void>,
 	): Promise<void> {
-		const getListrTask = (file: string) => ({
-			title: `generating ${arguments_['--as-html'] ? 'HTML' : 'PDF'} from ${chalk.underline(file)}`,
-			task: async () => {
-				try {
-					await convertMdToPdf({ path: file }, config, { args: arguments_ });
-					// File path is printed by ConverterService after successful write
-				} catch (error) {
-					// Format error message for user
-					const errorMessage = this.formatErrorMessage(error, file);
-					throw new Error(errorMessage);
-				}
-			},
-		});
+		const getListrTask = (file: string) => {
+			// Windows-compatible path display - use basename for long paths to avoid truncation
+			const displayPath = file.length > 60 ? basename(file) : file;
+			return {
+				title: `generating ${arguments_['--as-html'] ? 'HTML' : 'PDF'} from ${displayPath}`,
+				task: async () => {
+					try {
+						await convertMdToPdf({ path: file }, config, { args: arguments_ });
+						// File path is printed by ConverterService after successful write
+					} catch (error) {
+						// Format error message for user
+						const errorMessage = this.formatErrorMessage(error, file);
+						throw new Error(errorMessage);
+					}
+				},
+			};
+		};
 
 		try {
 			// Process all files

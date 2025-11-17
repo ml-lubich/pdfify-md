@@ -53,10 +53,15 @@ export class OutputGeneratorService implements IOutputGenerator {
 	public async closeBrowser(): Promise<void> {
 		if (this.browserInstance) {
 			try {
+				// Close all pages first
+				const pages = await this.browserInstance.pages();
+				await Promise.all(pages.map(page => page.close().catch(() => {})));
+				
+				// Then close browser with timeout
 				await Promise.race([
 					this.browserInstance.close(),
 					new Promise<void>((resolve) => {
-						setTimeout(() => resolve(), 2000); // 2s timeout
+						setTimeout(() => resolve(), 1000); // 1s timeout
 					}),
 				]);
 			} catch (error) {

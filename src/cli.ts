@@ -64,9 +64,22 @@ async function main() {
 		const errorMessage = error instanceof Error ? error.message : String(error);
 		console.error(`\n${chalk.red('✖ Error:')} ${errorMessage}\n`);
 		process.exitCode = 1;
+	} finally {
+		// Ensure cleanup happens
+		try {
+			await cliService.cleanup();
+		} catch {
+			// Ignore cleanup errors
+		}
+		
+		// Force exit if not in watch mode to prevent hanging
+		if (!cliFlags['--watch']) {
+			// Give a small delay for any final cleanup, then exit
+			setTimeout(() => {
+				process.exit(process.exitCode || 0);
+			}, 100);
+		}
 	}
-	// Don't force exit - let the process exit naturally after cleanup
-	// Watch mode needs to keep running, and normal mode will exit after cleanup
 }
 
 // Execute main function

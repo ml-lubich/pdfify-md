@@ -3,7 +3,7 @@
  * Uses dependency injection for all sub-services.
  */
 
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, relative, resolve, basename } from 'node:path';
 import puppeteer, { type Browser } from 'puppeteer';
 import grayMatter from 'gray-matter';
 import {
@@ -381,7 +381,9 @@ export class ConverterService {
 		// Resolve to absolute path for clarity - resolve() handles both relative and absolute paths correctly
 		// If path is already absolute, resolve returns it unchanged; if relative, resolves from cwd
 		const resolvedPath = resolve(filePath);
-		console.log(`✓ Generated ${fileType}: ${resolvedPath}`);
+		// Windows-compatible path output - use basename for long paths
+		const displayPath = resolvedPath.length > 80 ? basename(resolvedPath) : resolvedPath;
+		console.log(`✓ Generated ${fileType}: ${displayPath}`);
 	}
 
 	/**
