@@ -46,11 +46,11 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ml-lubich/md-pdf.git"
+    "url": "https://github.com/ml-lubich/pdify-md.git"
   },
-  "homepage": "https://github.com/ml-lubich/markpdf#readme",
+  "homepage": "https://github.com/ml-lubich/pdify-md#readme",
   "bugs": {
-    "url": "https://github.com/ml-lubich/markpdf/issues"
+    "url": "https://github.com/ml-lubich/pdify-md/issues"
   },
   "dependencies": {
     "arg": "^5.0.2",

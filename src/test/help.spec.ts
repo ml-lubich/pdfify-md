@@ -13,7 +13,7 @@ test('help should output help text without throwing', (t) => {
 	try {
 		help();
 		t.truthy(output);
-		t.true(output.includes('MARKPDF') || output.includes('mdpdf') || output.includes('markpdf'));
+		t.true(output.includes('pdfify-md') || output.includes('PDFIFY'));
 		t.true(output.includes('Options:'));
 		t.true(output.includes('Examples:'));
 	} finally {
