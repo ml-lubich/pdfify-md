@@ -15,7 +15,7 @@ const helpText = `
 ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═════╝ ╚═╝     
                                                            
 `)}
-  ${chalk.bold('$ md-pdf')} [options] path/to/file.md
+  ${chalk.bold('$ pdfify-md')} [options] path/to/file.md
 
   ${chalk.dim.underline.bold('Options:')}
 
@@ -50,47 +50,47 @@ const helpText = `
 
   ${chalk.gray('–')} Convert ./file.md and save to ./file.pdf
 
-    ${chalk.cyan('$ md-pdf file.md')}
+    ${chalk.cyan('$ pdfify-md file.md')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory
 
-    ${chalk.cyan('$ md-pdf ./*.md')}
+    ${chalk.cyan('$ pdfify-md ./*.md')}
 
   ${chalk.gray('–')} Convert all markdown files in current directory recursively
 
-    ${chalk.cyan('$ md-pdf ./**/*.md')}
+    ${chalk.cyan('$ pdfify-md ./**/*.md')}
 
   ${chalk.gray('–')} Convert and enable watch mode
 
-    ${chalk.cyan('$ md-pdf ./*.md -w')}
+    ${chalk.cyan('$ pdfify-md ./*.md -w')}
 
   ${chalk.gray('–')} Convert and enable watch mode with custom options
 
-    ${chalk.cyan('$ md-pdf ./*.md --watch --watch-options \'{ "atomic": true }\'')}
+    ${chalk.cyan('$ pdfify-md ./*.md --watch --watch-options \'{ "atomic": true }\'')}
 
   ${chalk.gray('–')} Convert path/to/file.md with a different base directory
 
-    ${chalk.cyan('$ md-pdf path/to/file.md --basedir path')}
+    ${chalk.cyan('$ pdfify-md path/to/file.md --basedir path')}
 
   ${chalk.gray('–')} Convert file.md using custom-markdown.css
 
-    ${chalk.cyan('$ md-pdf file.md --stylesheet custom-markdown.css')}
+    ${chalk.cyan('$ pdfify-md file.md --stylesheet custom-markdown.css')}
 
   ${chalk.gray('–')} Convert file.md using the Monokai theme for code highlighting
 
-    ${chalk.cyan('$ md-pdf file.md --highlight-style monokai')}
+    ${chalk.cyan('$ pdfify-md file.md --highlight-style monokai')}
 
   ${chalk.gray('–')} Convert file.md using custom page options
 
-    ${chalk.cyan('$ md-pdf file.md --pdf-options \'{ "format": "Letter" }\'')}
+    ${chalk.cyan('$ pdfify-md file.md --pdf-options \'{ "format": "Letter" }\'')}
 
   ${chalk.gray('–')} Convert file.md but save the intermediate HTML instead
 
-    ${chalk.cyan('$ md-pdf file.md --as-html')}
+    ${chalk.cyan('$ pdfify-md file.md --as-html')}
 
   ${chalk.gray('–')} Convert with custom Mermaid chart sizes
 
-    ${chalk.cyan('$ md-pdf file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4')}
+    ${chalk.cyan('$ pdfify-md file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4')}
 `;
 
 export const help = (): void => console.log(helpText);
