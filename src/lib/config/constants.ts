@@ -61,10 +61,10 @@ export const MERMAID_CONSTANTS = {
 
 	/**
 	 * Device scale factor for high-resolution screenshots.
-	 * 3 = 3x resolution (Super Retina) - gives high-res PNGs even at smaller visual sizes
-	 * Higher values produce sharper images. 3x provides excellent quality for PDFs.
+	 * 4 = 4x resolution (Ultra High-Res) - gives ultra-sharp PNGs even at smaller visual sizes
+	 * Higher values produce sharper images. 4x provides maximum quality for PDFs while maintaining visual size.
 	 */
-	DEVICE_SCALE_FACTOR: 3,
+	DEVICE_SCALE_FACTOR: 4,
 
 	/**
 	 * Temporary directory name for Mermaid images.
