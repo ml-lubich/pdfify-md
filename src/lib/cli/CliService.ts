@@ -256,7 +256,7 @@ export class CliService {
 		arguments_: CliArgs,
 		getListrTask: (file: string) => { title: string; task: () => Promise<void> },
 	): Promise<void> {
-		console.log(chalk.bgBlue('\n watching for changes \n'));
+		console.log(chalk.blue('\n✓ Watching for changes...\n'));
 
 		const watchOptions = arguments_['--watch-options'] ? JSON.parse(arguments_['--watch-options']) : {};
 
