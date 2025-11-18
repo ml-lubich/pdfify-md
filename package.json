@@ -1,6 +1,6 @@
 {
   "name": "pdfify-md",
-  "version": "6.0.15",
+  "version": "6.0.16",
   "description": "Modern, powerful CLI tool for converting Markdown files to PDF with Mermaid diagram support, syntax highlighting, and advanced customization.",
   "keywords": [
     "markdown-to-pdf",
@@ -32,7 +32,7 @@
     "clean": "rm -rf dist",
     "prepack": "npm run clean && npm run build",
     "lint": "xo",
-    "test": "nyc ava src/test/lib.spec.ts src/test/help.spec.ts src/test/serve-dir.spec.ts src/test/validate-node-version.spec.ts src/test/config-service.spec.ts src/test/file-service.spec.ts src/test/markdown-parser-service.spec.ts src/test/get-marked-edge-cases.spec.ts src/test/server-service.spec.ts src/test/hash-utils.spec.ts src/test/domain/result.spec.ts src/test/domain/logger.spec.ts src/test/domain/errors.spec.ts src/test/domain/entities.spec.ts && ava src/test/api.spec.ts src/test/index.spec.ts && ava src/test/cli.spec.ts src/test/cli-service.spec.ts src/test/cli-edge-cases.spec.ts src/test/cli-usage-edge-cases.spec.ts src/test/md-to-pdf.spec.ts src/test/generate-output.spec.ts src/test/output-generator-service.spec.ts src/test/output-generator-edge-cases.spec.ts src/test/process-mermaid.spec.ts src/test/mermaid-processor-service.spec.ts src/test/mermaid-parallel-processing.spec.ts src/test/mermaid-image-generation.spec.ts src/test/edge-cases-negative.spec.ts src/test/converter-service.spec.ts src/test/converter-service-edge-cases.spec.ts --timeout=2m",
+    "test": "nyc ava src/test/lib.spec.ts src/test/help.spec.ts src/test/serve-dir.spec.ts src/test/validate-node-version.spec.ts src/test/config-service.spec.ts src/test/file-service.spec.ts src/test/markdown-parser-service.spec.ts src/test/get-marked-edge-cases.spec.ts src/test/server-service.spec.ts src/test/hash-utils.spec.ts src/test/domain/result.spec.ts src/test/domain/logger.spec.ts src/test/domain/errors.spec.ts src/test/domain/entities.spec.ts && ava src/test/api.spec.ts src/test/index.spec.ts && ava src/test/cli.spec.ts src/test/cli-service.spec.ts src/test/cli-edge-cases.spec.ts src/test/cli-usage-edge-cases.spec.ts src/test/output-path-verification.spec.ts src/test/md-to-pdf.spec.ts src/test/generate-output.spec.ts src/test/output-generator-service.spec.ts src/test/output-generator-edge-cases.spec.ts src/test/process-mermaid.spec.ts src/test/mermaid-processor-service.spec.ts src/test/mermaid-quality-verification.spec.ts src/test/mermaid-parallel-processing.spec.ts src/test/mermaid-image-generation.spec.ts src/test/edge-cases-negative.spec.ts src/test/converter-service.spec.ts src/test/converter-service-edge-cases.spec.ts --timeout=2m",
     "test:lint": "xo",
     "test:type-check": "tsc -p tsconfig.type-test.json --noEmit",
     "release": "npm test && npx standard-version --infile=CHANGELOG.md && git push --follow-tags origin master && npm publish",
@@ -68,7 +68,7 @@
     "serve-handler": "^6.1.6"
   },
   "devDependencies": {
-    "pdfify-md": "^6.0.15",
+    "pdfify-md": "^6.0.16",
     "@types/listr": "^0.14.10",
     "@types/marked": "^4.3.0",
     "@types/semver": "^7.7.1",
