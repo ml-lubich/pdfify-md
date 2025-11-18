@@ -260,9 +260,11 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			}
 
 			// Set viewport with high device scale factor for high-resolution screenshots
-			// Visual size varies by chart type, but PNG will be 3x resolution for sharp images
-			const viewportWidth = Math.ceil(chartWidth) + MERMAID_CONSTANTS.CHART_PADDING_PX;
-			const viewportHeight = Math.ceil(chartHeight) + MERMAID_CONSTANTS.CHART_PADDING_PX;
+			// Ensure minimum viewport size for quality, especially for small vertical charts
+			// For very small charts, use a larger viewport to ensure sharp rendering
+			const minViewportSize = 400; // Minimum viewport dimension for quality rendering
+			const viewportWidth = Math.max(Math.ceil(chartWidth) + MERMAID_CONSTANTS.CHART_PADDING_PX, minViewportSize);
+			const viewportHeight = Math.max(Math.ceil(chartHeight) + MERMAID_CONSTANTS.CHART_PADDING_PX, minViewportSize);
 			
 			// Get resolution from config or use default
 			const deviceScaleFactor = config?.mermaid?.resolution ?? MERMAID_CONSTANTS.DEVICE_SCALE_FACTOR;
