@@ -49,7 +49,9 @@ export class MermaidProcessorService implements IMermaidProcessor {
 		await this.ensureImageDirectory(imageDir);
 
 		const totalCharts = matches.length;
-		if (totalCharts > 0) {
+		// Suppress verbose logging when running from CLI (Listr handles progress)
+		const isCliContext = process.stdout.isTTY && process.env.LISTR_DISABLE_OUTPUT !== 'true';
+		if (totalCharts > 0 && !isCliContext) {
 			console.log(`Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} in parallel...`);
 		}
 
@@ -86,7 +88,8 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				const maxWidthPercent = MERMAID_CONSTANTS.MAX_CHART_WIDTH_PERCENT;
 				const imageMarkdown = `<div class="${MERMAID_CONSTANTS.CONTAINER_CLASS}" style="max-width: ${maxWidthPercent}%; margin: 0.5em auto; text-align: center;"><img src="${imageDataUri}" alt="Mermaid Chart ${index + 1}" style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" /></div>`;
 
-				if (totalCharts > 1) {
+				// Suppress verbose logging when running from CLI
+				if (totalCharts > 1 && !isCliContext) {
 					console.log(`  ✓ Chart ${index + 1}/${totalCharts} rendered`);
 				}
 
@@ -95,7 +98,8 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				// Remove the failed Mermaid diagram from markdown instead of including broken image
 				const errorMessage = error instanceof Error ? error.message : String(error);
 				warnings.push(`Skipping Mermaid chart ${index + 1} due to syntax error: ${errorMessage}`);
-				if (totalCharts > 1) {
+				// Suppress verbose logging when running from CLI
+				if (totalCharts > 1 && !isCliContext) {
 					console.log(`  ⚠ Chart ${index + 1}/${totalCharts} skipped (syntax error)`);
 				}
 				// Return empty markdown to remove the code block
@@ -120,7 +124,8 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			}
 		}
 
-		if (totalCharts > 0) {
+		// Suppress verbose logging when running from CLI
+		if (totalCharts > 0 && !isCliContext) {
 			console.log(`✓ All Mermaid charts processed`);
 		}
 

@@ -377,6 +377,13 @@ export class ConverterService {
 	 * @param output - The conversion output to determine file type
 	 */
 	private printOutputPath(filePath: string, output: ConversionOutput): void {
+		// Only print if not running from CLI (Listr handles CLI output)
+		// Check if we're in a CLI context by checking for Listr or if stdout is a TTY
+		if (process.stdout.isTTY && process.env.LISTR_DISABLE_OUTPUT !== 'true') {
+			// Likely running from CLI with Listr - suppress this output
+			return;
+		}
+		
 		const fileType = this.determineFileType(output);
 		// Resolve to absolute path for clarity - resolve() handles both relative and absolute paths correctly
 		// If path is already absolute, resolve returns it unchanged; if relative, resolves from cwd

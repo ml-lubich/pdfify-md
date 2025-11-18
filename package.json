@@ -1,6 +1,6 @@
 {
   "name": "pdfify-md",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "description": "Modern, powerful CLI tool for converting Markdown files to PDF with Mermaid diagram support, syntax highlighting, and advanced customization.",
   "keywords": [
     "markdown-to-pdf",
@@ -68,7 +68,7 @@
     "serve-handler": "^6.1.6"
   },
   "devDependencies": {
-    "pdfify-md": "^6.0.7",
+    "pdfify-md": "^6.0.8",
     "@types/listr": "^0.14.10",
     "@types/marked": "^4.3.0",
     "@types/semver": "^7.7.1",

@@ -217,8 +217,14 @@ export class CliService {
 		};
 
 		try {
-			// Process all files
-			await new Listr(files.map(getListrTask), { concurrent: true, exitOnError: false }).run();
+			// Set environment variable to indicate CLI context for logging suppression
+			process.env.LISTR_DISABLE_OUTPUT = 'false';
+			// Process all files concurrently
+			await new Listr(files.map(getListrTask), { 
+				concurrent: true, 
+				exitOnError: false,
+				renderer: process.stdout.isTTY ? 'default' : 'verbose'
+			}).run();
 
 			// Handle watch mode
 			if (arguments_['--watch']) {
