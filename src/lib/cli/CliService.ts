@@ -4,7 +4,7 @@
  */
 
 import path from 'node:path';
-import { basename, parse, join, resolve } from 'node:path';
+import { basename, join } from 'node:path';
 import chalk from 'chalk';
 import { watch } from 'chokidar';
 import getPort from 'get-port';
@@ -225,16 +225,6 @@ export class CliService {
 				exitOnError: false,
 				renderer: process.stdout.isTTY ? 'default' : 'verbose'
 			}).run();
-			
-			// After all files are processed, print the full paths of generated files
-			// This ensures users know exactly where their PDFs were created in cwd
-			for (const file of files) {
-				const parsed = parse(file);
-				const outputExt = arguments_['--as-html'] ? 'html' : 'pdf';
-				const outputPath = join(process.cwd(), `${parsed.name}.${outputExt}`);
-				const fullPath = resolve(outputPath);
-				console.log(`✓ Generated ${arguments_['--as-html'] ? 'HTML' : 'PDF'}: ${fullPath}`);
-			}
 
 			// Handle watch mode
 			if (arguments_['--watch']) {

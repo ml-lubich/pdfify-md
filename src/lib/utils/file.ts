@@ -39,14 +39,13 @@ export const readFile = async (file: string, encoding = 'utf-8'): Promise<string
  * Derive the output file path from a source markdown file.
  *
  * Replaces the markdown file extension with the specified output extension.
- * Always generates output in the current working directory (cwd) for consistency.
+ * Preserves the directory structure and base filename.
  *
  * @param mdFilePath - Path to the source markdown file
  * @param extension - Output file extension ('html' or 'pdf')
- * @returns Output file path with new extension, always in cwd
+ * @returns Output file path with new extension
  */
 export const getOutputFilePath = (mdFilePath: string, extension: 'html' | 'pdf'): string => {
-	const { name } = parse(mdFilePath);
-	// Always generate in current working directory
-	return join(process.cwd(), `${name}.${extension}`);
+	const { dir, name } = parse(mdFilePath);
+	return join(dir, `${name}.${extension}`);
 };
