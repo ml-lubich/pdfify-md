@@ -4,14 +4,13 @@
  */
 
 import path from 'node:path';
-import { basename } from 'node:path';
+import { basename, parse, join, resolve } from 'node:path';
 import chalk from 'chalk';
 import { watch } from 'chokidar';
 import getPort from 'get-port';
 import getStdin from 'get-stdin';
 import Listr from 'listr';
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { type PackageJson } from '../../index.js';
 import { type Config, defaultConfig } from '../config.js';
 import { convertMdToPdf } from '../core/converter.js';
@@ -198,7 +197,7 @@ export class CliService {
 		arguments_: CliArgs,
 		cleanup: () => Promise<void>,
 	): Promise<void> {
-		const getListrTask = (file: string) => {
+			const getListrTask = (file: string) => {
 			// Windows-compatible path display - use basename for long paths to avoid truncation
 			const displayPath = file.length > 60 ? basename(file) : file;
 			return {
@@ -207,6 +206,7 @@ export class CliService {
 					try {
 						await convertMdToPdf({ path: file }, config, { args: arguments_ });
 						// File path is printed by ConverterService after successful write
+						// The full absolute path will be printed after Listr completes
 					} catch (error) {
 						// Format error message for user
 						const errorMessage = this.formatErrorMessage(error, file);
@@ -225,6 +225,16 @@ export class CliService {
 				exitOnError: false,
 				renderer: process.stdout.isTTY ? 'default' : 'verbose'
 			}).run();
+			
+			// After all files are processed, print the full paths of generated files
+			// This ensures users know exactly where their PDFs were created in cwd
+			for (const file of files) {
+				const parsed = parse(file);
+				const outputExt = arguments_['--as-html'] ? 'html' : 'pdf';
+				const outputPath = join(process.cwd(), `${parsed.name}.${outputExt}`);
+				const fullPath = resolve(outputPath);
+				console.log(`✓ Generated ${arguments_['--as-html'] ? 'HTML' : 'PDF'}: ${fullPath}`);
+			}
 
 			// Handle watch mode
 			if (arguments_['--watch']) {
