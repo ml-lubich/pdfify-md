@@ -48,6 +48,7 @@ export const cliFlags = arg({
 	'-h': '--help',
 	'-v': '--version',
 	'-w': '--watch',
+	'-r': '--mermaid-resolution',
 });
 
 /**

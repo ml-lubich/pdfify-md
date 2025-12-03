@@ -24,11 +24,12 @@
    - Works together with `vertical-width` to keep vertical charts compact
    - Reduced significantly to make vertical charts way smaller
 
-4. **`--mermaid-resolution`** (default: 3, range: 1-4)
+4. **`--mermaid-resolution`** (default: 8, any positive number)
    - **Does NOT change the visual size or shape of charts**
    - Only affects PNG image quality (sharpness)
    - Higher = sharper images but larger file size
-   - Example: 800px visual chart with resolution 3 = 2400px PNG file, but still displays as 800px
+   - Any positive number is supported (common values: 2-4 for web, 6-10 for print)
+   - Example: 800px visual chart with resolution 8 = 6400px PNG file, but still displays as 800px
 
 ### How It Works
 
@@ -64,7 +65,7 @@ Create a `markpdf.config.json` file:
     "horizontal_width": 1000,
     "vertical_width": 600,
     "max_height": 500,
-    "resolution": 3
+    "resolution": 8
   }
 }
 ```

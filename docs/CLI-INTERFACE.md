@@ -231,6 +231,16 @@ markpdf document.md --page-media-type print
 
 ### PDF Options
 
+#### `--html-pdf-options <json>`
+
+Custom HTML to PDF conversion options as a JSON string. Legacy option, use `--pdf-options` instead.
+
+```bash
+markpdf document.md --html-pdf-options '{"format": "A4"}'
+```
+
+**Note:** This option is deprecated. Use `--pdf-options` instead for consistency.
+
 #### `--pdf-options <json>`
 
 Custom PDF options as a JSON string. These are Puppeteer PDF options.

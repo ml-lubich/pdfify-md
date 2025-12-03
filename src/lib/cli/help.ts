@@ -44,7 +44,7 @@ const helpText = `
     --mermaid-horizontal-width ${chalk.dim('..')} Max width for horizontal charts (default: 1600)
     --mermaid-vertical-width ${chalk.dim('....')} Max width for vertical charts (default: 250)
     --mermaid-max-height ${chalk.dim('.......')} Max height for charts (default: 200)
-    --mermaid-resolution ${chalk.dim('........')} Image resolution scale factor 1-4 (default: 3)
+    -r, --mermaid-resolution ${chalk.dim('....')} Image resolution scale factor (default: 8, any positive number)
 
   ${chalk.dim.underline.bold('Examples:')}
 
@@ -90,7 +90,7 @@ const helpText = `
 
   ${chalk.gray('–')} Convert with custom Mermaid chart sizes
 
-    ${chalk.cyan('$ pdfify-md file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4')}
+    ${chalk.cyan('$ pdfify-md file.md --mermaid-horizontal-width 1000 -r 10')}
 `;
 
 export const help = (): void => console.log(helpText);

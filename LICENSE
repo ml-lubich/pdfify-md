@@ -1,16 +1,37 @@
-MIT License
+Non-Commercial License
 
-Copyright (c) 2025 Misha Lubich (ml-lubich)
+Copyright (c) 2024 Misha Lubich (ml-lubich)
+All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+of this software and associated documentation files (the "Software"), to use,
+copy, modify, merge, publish, and distribute the Software, subject to the
+following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. The above copyright notice and this permission notice shall be included
+   in all copies or substantial portions of the Software.
+
+2. Attribution: All copies, modifications, and derivative works must include
+   proper attribution to the original author (Misha Lubich, ml-lubich) and
+   a link to the original repository: https://github.com/ml-lubich/markpdf
+
+3. Non-Commercial Use: This software may NOT be used for commercial purposes
+   without explicit written permission from the copyright holder. Commercial
+   purposes include, but are not limited to:
+   - Selling the software or any derivative works
+   - Using the software in products or services offered for sale
+   - Using the software to generate revenue, directly or indirectly
+   - Incorporating the software into commercial applications
+
+4. Educational Use: This software may be freely used for educational purposes,
+   including:
+   - Teaching and learning
+   - Research and academic projects
+   - Personal projects and experimentation
+   - Open source projects (non-commercial)
+
+5. Distribution: This software may be distributed under the same terms,
+   provided all copies include this license and copyright notice.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -19,3 +40,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+For commercial licensing inquiries, please contact:
+Misha Lubich <michaelle.lubich@gmail.com>
+https://github.com/ml-lubich

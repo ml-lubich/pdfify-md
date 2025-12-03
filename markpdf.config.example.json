@@ -3,7 +3,7 @@
     "horizontal_width": 1600,
     "vertical_width": 250,
     "max_height": 200,
-    "resolution": 3
+    "resolution": 8
   },
   "pdf_options": {
     "format": "a4",

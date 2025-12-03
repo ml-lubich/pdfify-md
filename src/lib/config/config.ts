@@ -199,9 +199,10 @@ type BasicConfig = {
 		 */
 		max_height?: number;
 		/**
-		 * Device scale factor for high-resolution screenshots (1-4).
-		 * Higher values = sharper images but larger file size.
-		 * Default: 3
+		 * Device scale factor for high-resolution screenshots.
+		 * Any positive number is supported. Higher values = sharper images but larger file size.
+		 * Common values: 2-4 for web, 6-10 for print.
+		 * Default: 8
 		 */
 		resolution?: number;
 	};

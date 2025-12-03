@@ -23,6 +23,35 @@
 - ⚡ **Concurrent Processing** - Convert multiple files simultaneously
 - 🔧 **Highly Configurable** - Extensive customization options
 
+## 🎨 Mermaid Diagram Showcase
+
+<div align="center">
+
+### Beautiful Diagrams Rendered in PDF
+
+See the stunning Mermaid diagrams that can be rendered directly in your PDFs:
+
+<table>
+<tr>
+<td align="center" width="33%">
+<strong>Flowchart</strong><br>
+<img src="assets/mermaid1.png" alt="Mermaid Flowchart" width="100%" style="border: 2px solid #4CAF50; border-radius: 12px; margin: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+<td align="center" width="33%">
+<strong>State Diagram</strong><br>
+<img src="assets/mermaid2.png" alt="Mermaid State Diagram" width="100%" style="border: 2px solid #2196F3; border-radius: 12px; margin: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+<td align="center" width="33%">
+<strong>Git Graph</strong><br>
+<img src="assets/mermaid3.png" alt="Mermaid Git Graph" width="100%" style="border: 2px solid #FF9800; border-radius: 12px; margin: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</td>
+</tr>
+</table>
+
+*All diagrams are automatically rendered from Markdown code blocks and embedded directly in your PDFs!*
+
+</div>
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
@@ -40,7 +69,7 @@
 ### Installation
 
 ```bash
-npm install -g markpdf
+npm install -g pdfify-md
 ```
 
 Or clone and install locally:
@@ -55,23 +84,23 @@ npm link
 #### As a Dependency
 
 ```bash
-npm install @ml-lubich/markpdf
+npm install pdfify-md
 ```
 
 ### Basic Usage
 
 ```bash
 # Convert a single file
-markpdf document.md
+pdfify-md document.md
 
 # Convert multiple files
-markpdf *.md
+pdfify-md *.md
 
 # Watch mode - automatically regenerate on changes
-markpdf --watch document.md
+pdfify-md --watch document.md
 
 # Use stdin
-cat document.md | markpdf > output.pdf
+cat document.md | pdfify-md > output.pdf
 ```
 
 ## 📖 Documentation
@@ -98,6 +127,7 @@ flowchart TD
 - Entity Relationship Diagrams
 - And more!
 
+
 **Chart Configuration:**
 
 Control chart sizes and resolution. **These parameters do NOT conflict** - they work together:
@@ -105,22 +135,21 @@ Control chart sizes and resolution. **These parameters do NOT conflict** - they 
 - `--mermaid-horizontal-width` - Max width for horizontal charts (default: 1600px)
 - `--mermaid-vertical-width` - Max width for vertical charts (default: 250px)  
 - `--mermaid-max-height` - Max height for vertical charts (default: 200px)
-- `--mermaid-resolution` - Image quality 1-4 (default: 3) - **does NOT change visual size, only PNG sharpness**
+- `-r, --mermaid-resolution` - Image quality (default: 8, any positive number) - **does NOT change visual size, only PNG sharpness**
 
 ```bash
 # One-time use (not persistent)
-markpdf file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4
+pdfify-md file.md --mermaid-horizontal-width 1000 -r 10
 
 # Persistent: Use config file
-markpdf file.md --config-file markpdf.config.json
+pdfify-md file.md --config-file markpdf.config.json
 ```
 
 **For persistent settings, use a config file** (see [Chart Configuration Guide](docs/CHART-CONFIGURATION.md)).
 
 ### Programmatic API
 
-```typescript
-import { mdToPdf } from '@ml-lubich/markpdf';
+import { mdToPdf } from 'pdfify-md';
 import { writeFileSync } from 'fs';
 
 async function convert() {
@@ -146,7 +175,7 @@ convert();
 
 ### Configuration Options
 
-markpdf supports multiple ways to configure PDF generation. Configuration sources are merged in the following order (later sources override earlier ones):
+pdfify-md supports multiple ways to configure PDF generation. Configuration sources are merged in the following order (later sources override earlier ones):
 
 1. **Default configuration** - Built-in defaults
 2. **Config file** (optional) - JSON/JS config file specified with `--config-file`
@@ -199,7 +228,7 @@ highlight_style: github
 # Your Document Content
 ````
 
-**Note**: CLI arguments override front matter settings. For example, if your front matter specifies `format: a4` but you run `markpdf --pdf-options '{"format":"Letter"}' document.md`, the Letter format will be used.
+**Note**: CLI arguments override front matter settings. For example, if your front matter specifies `format: a4` but you run `pdfify-md --pdf-options '{"format":"Letter"}' document.md`, the Letter format will be used.
 
 ### Advanced Features
 
@@ -282,12 +311,12 @@ npm run lint
 
 #### Basic Conversion
 ```bash
-markpdf README.md
+pdfify-md README.md
 ```
 
 #### Custom Styling
 ```bash
-markpdf document.md \
+pdfify-md document.md \
   --stylesheet custom.css \
   --css "body { font-family: 'Georgia', serif; }" \
   --highlight-style github
@@ -295,12 +324,12 @@ markpdf document.md \
 
 #### Watch Mode
 ```bash
-markpdf --watch document.md
+pdfify-md --watch document.md
 ```
 
 #### Multiple Files
 ```bash
-markpdf chapter1.md chapter2.md chapter3.md
+pdfify-md chapter1.md chapter2.md chapter3.md
 ```
 
 ### Example Files
@@ -331,7 +360,7 @@ Always sanitize user-provided Markdown content before processing to prevent secu
 
 ## 🤝 Contributing
 
-Contributions are welcome! We appreciate your help in making markpdf better.
+Contributions are welcome! We appreciate your help in making pdfify-md better.
 
 Please read our [Contributing Guide](CONTRIBUTING.md) for details on:
 
