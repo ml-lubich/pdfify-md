@@ -19,10 +19,10 @@ export const MERMAID_CONSTANTS = {
 
 	/**
 	 * Timeout for Mermaid rendering in milliseconds.
-	 * Set to aggressive value to prevent stalling - fail fast if chart doesn't render quickly.
-	 * Most charts render in 1-2 seconds, so 2.5 seconds is sufficient for fast processing.
+	 * Set to generous value to allow complex charts with many nodes to render fully.
+	 * Complex flowcharts with subgraphs may take 10-30 seconds on slower connections.
 	 */
-	RENDER_TIMEOUT_MS: 2_500,
+	RENDER_TIMEOUT_MS: 60_000,
 
 	/**
 	 * Padding around Mermaid charts in pixels.

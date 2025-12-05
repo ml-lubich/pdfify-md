@@ -45,6 +45,7 @@ const helpText = `
     --mermaid-vertical-width ${chalk.dim('....')} Max width for vertical charts (default: 250)
     --mermaid-max-height ${chalk.dim('.......')} Max height for charts (default: 200)
     -r, --mermaid-resolution ${chalk.dim('....')} Image resolution scale factor (default: 8, any positive number)
+    -t, --mermaid-timeout ${chalk.dim('.......')} Mermaid render timeout in ms (default: 60000)
 
   ${chalk.dim.underline.bold('Examples:')}
 

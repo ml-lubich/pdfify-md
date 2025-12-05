@@ -130,10 +130,14 @@ export class ConfigService implements IConfigService {
 				merged.mermaid.max_height = argumentValue;
 				continue;
 			}
-			if (argumentKey === '--mermaid-resolution' && typeof argumentValue === 'number') {
-				merged.mermaid.resolution = argumentValue;
-				continue;
-			}
+		if (argumentKey === '--mermaid-resolution' && typeof argumentValue === 'number') {
+			merged.mermaid.resolution = argumentValue;
+			continue;
+		}
+		if (argumentKey === '--mermaid-timeout' && typeof argumentValue === 'number') {
+			merged.mermaid.timeout = argumentValue;
+			continue;
+		}
 
 			const key = argumentKey.slice(2).replaceAll('-', '_');
 

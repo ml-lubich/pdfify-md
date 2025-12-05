@@ -43,12 +43,14 @@ export const cliFlags = arg({
 	'--mermaid-vertical-width': Number,
 	'--mermaid-max-height': Number,
 	'--mermaid-resolution': Number,
+	'--mermaid-timeout': Number,
 
 	// Aliases
 	'-h': '--help',
 	'-v': '--version',
 	'-w': '--watch',
 	'-r': '--mermaid-resolution',
+	'-t': '--mermaid-timeout',
 });
 
 /**

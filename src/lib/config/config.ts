@@ -205,6 +205,12 @@ type BasicConfig = {
 		 * Default: 8
 		 */
 		resolution?: number;
+		/**
+		 * Timeout for Mermaid chart rendering in milliseconds.
+		 * Increase for complex charts with many nodes.
+		 * Default: 60000 (60 seconds)
+		 */
+		timeout?: number;
 	};
 };
 

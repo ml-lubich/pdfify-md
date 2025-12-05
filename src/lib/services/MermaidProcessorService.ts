@@ -49,10 +49,12 @@ export class MermaidProcessorService implements IMermaidProcessor {
 		await this.ensureImageDirectory(imageDir);
 
 		const totalCharts = matches.length;
-		// Suppress verbose logging when running from CLI (Listr handles progress)
-		const isCliContext = process.stdout.isTTY && process.env.LISTR_DISABLE_OUTPUT !== 'true';
-		if (totalCharts > 0 && !isCliContext) {
-			console.log(`Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} in parallel...`);
+		// Get timeout from config or use default constant
+		const renderTimeout = config?.mermaid?.timeout ?? MERMAID_CONSTANTS.RENDER_TIMEOUT_MS;
+		// Always show progress for Mermaid charts (useful for debugging slow charts)
+		const showProgress = process.stdout.isTTY;
+		if (totalCharts > 0 && showProgress) {
+			console.log(`\n  Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} (timeout: ${Math.round(renderTimeout / 1000)}s)...`);
 		}
 
 		// Process charts in batches to avoid overloading browser (max 6 concurrent pages)
@@ -68,13 +70,18 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			}
 
 			try {
+				// Show progress for this chart
+				if (showProgress) {
+					process.stdout.write(`    [${index + 1}/${totalCharts}] Rendering chart ${index + 1}...`);
+				}
+				
 				// Generate short 8-character hash for filename
 				const contentHash = generateContentHash(mermaidCode, 8);
-				// Wrap in Promise.race with aggressive timeout to prevent stalling
+				// Wrap in Promise.race with configurable timeout to prevent stalling
 				const imagePath = await Promise.race([
 					this.renderMermaidToImage(mermaidCode, browser, imageDir, contentHash, index, config),
 					new Promise<string>((_, reject) => 
-						setTimeout(() => reject(new Error(`Chart rendering timeout after ${MERMAID_CONSTANTS.RENDER_TIMEOUT_MS}ms`)), MERMAID_CONSTANTS.RENDER_TIMEOUT_MS + 1000)
+						setTimeout(() => reject(new Error(`Chart rendering timeout after ${renderTimeout}ms`)), renderTimeout + 1000)
 					),
 				]);
 
@@ -88,9 +95,9 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				const maxWidthPercent = MERMAID_CONSTANTS.MAX_CHART_WIDTH_PERCENT;
 				const imageMarkdown = `<div class="${MERMAID_CONSTANTS.CONTAINER_CLASS}" style="max-width: ${maxWidthPercent}%; margin: 0.5em auto; text-align: center;"><img src="${imageDataUri}" alt="Mermaid Chart ${index + 1}" style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" /></div>`;
 
-				// Suppress verbose logging when running from CLI
-				if (totalCharts > 1 && !isCliContext) {
-					console.log(`  ✓ Chart ${index + 1}/${totalCharts} rendered`);
+				// Show success for this chart
+				if (showProgress) {
+					process.stdout.write(` done\n`);
 				}
 
 				return { fullMatch, imageMarkdown, imagePath };
@@ -98,9 +105,9 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				// Remove the failed Mermaid diagram from markdown instead of including broken image
 				const errorMessage = error instanceof Error ? error.message : String(error);
 				warnings.push(`Skipping Mermaid chart ${index + 1} due to syntax error: ${errorMessage}`);
-				// Suppress verbose logging when running from CLI
-				if (totalCharts > 1 && !isCliContext) {
-					console.log(`  ⚠ Chart ${index + 1}/${totalCharts} skipped (syntax error)`);
+				// Show failure for this chart
+				if (showProgress) {
+					process.stdout.write(` FAILED\n`);
 				}
 				// Return empty markdown to remove the code block
 				return { fullMatch, imageMarkdown: '', imagePath: null };
@@ -124,9 +131,9 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			}
 		}
 
-		// Suppress verbose logging when running from CLI
-		if (totalCharts > 0 && !isCliContext) {
-			console.log(`✓ All Mermaid charts processed`);
+		// Show completion message
+		if (totalCharts > 0 && showProgress) {
+			console.log(`  All ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} processed\n`);
 		}
 
 		return {
@@ -181,9 +188,12 @@ export class MermaidProcessorService implements IMermaidProcessor {
 	): Promise<string> {
 		const page = await browser.newPage();
 		
+		// Get timeout from config or use default constant
+		const renderTimeout = config?.mermaid?.timeout ?? MERMAID_CONSTANTS.RENDER_TIMEOUT_MS;
+		
 		// Set page timeout to prevent hanging
-		page.setDefaultTimeout(MERMAID_CONSTANTS.RENDER_TIMEOUT_MS);
-		page.setDefaultNavigationTimeout(MERMAID_CONSTANTS.RENDER_TIMEOUT_MS);
+		page.setDefaultTimeout(renderTimeout);
+		page.setDefaultNavigationTimeout(renderTimeout);
 		
 		// Block unnecessary resources to speed up loading and prevent hangs
 		await page.setRequestInterception(true);
@@ -202,9 +212,9 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			// Use domcontentloaded for faster loading - don't wait for all resources
 			// Mermaid CDN loads quickly, and we wait for render anyway
 			// Set content without waiting - Mermaid will load asynchronously
-			await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: 2000 });
+			await page.setContent(html, { waitUntil: 'domcontentloaded', timeout: renderTimeout });
 
-			await this.waitForMermaidRender(page);
+			await this.waitForMermaidRender(page, renderTimeout);
 
 			const dimensions = await this.getSvgDimensions(page);
 			if (!dimensions) {
@@ -303,7 +313,7 @@ export class MermaidProcessorService implements IMermaidProcessor {
 					path: temporaryImagePath,
 					type: 'png',
 				} as any),
-				new Promise((_, reject) => setTimeout(() => reject(new Error('Screenshot timeout')), 1500)),
+				new Promise((_, reject) => setTimeout(() => reject(new Error('Screenshot timeout')), renderTimeout)),
 			]);
 
 			return temporaryImagePath;
@@ -367,25 +377,25 @@ ${mermaidCode}
 
 	/**
 	 * Wait for Mermaid to render the SVG.
-	 * Uses aggressive timeout and polling to prevent stalling.
+	 * Uses configurable timeout and polling to prevent stalling.
 	 */
-	private async waitForMermaidRender(page: Page): Promise<void> {
+	private async waitForMermaidRender(page: Page, timeout: number = MERMAID_CONSTANTS.RENDER_TIMEOUT_MS): Promise<void> {
 		try {
-			// Use shorter timeout with frequent polling to detect failures quickly
+			// Use configurable timeout with frequent polling to detect failures quickly
 			await Promise.race([
 				page.waitForFunction(
 					() => {
 						const mermaidElement = document.querySelector('.mermaid svg');
 						return mermaidElement !== null && mermaidElement.children.length > 0;
 					},
-					{ timeout: MERMAID_CONSTANTS.RENDER_TIMEOUT_MS, polling: 50 },
+					{ timeout, polling: 50 },
 				),
 				new Promise((_, reject) => 
-					setTimeout(() => reject(new Error('Mermaid render timeout')), MERMAID_CONSTANTS.RENDER_TIMEOUT_MS)
+					setTimeout(() => reject(new Error('Mermaid render timeout')), timeout)
 				),
 			]);
 		} catch (error) {
-			throw new Error(`Mermaid chart did not render within ${MERMAID_CONSTANTS.RENDER_TIMEOUT_MS}ms timeout`);
+			throw new Error(`Mermaid chart did not render within ${timeout}ms timeout`);
 		}
 	}
 
