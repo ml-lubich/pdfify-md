@@ -48,15 +48,8 @@ export class MermaidProcessorService implements IMermaidProcessor {
 
 		await this.ensureImageDirectory(imageDir);
 
-		const totalCharts = matches.length;
 		// Get timeout from config or use default constant
 		const renderTimeout = config?.mermaid?.timeout ?? MERMAID_CONSTANTS.RENDER_TIMEOUT_MS;
-		// Always show progress for Mermaid charts (useful for debugging slow charts)
-		// Use stderr to bypass Listr's stdout capture
-		const showProgress = process.stderr.isTTY;
-		if (totalCharts > 0 && showProgress) {
-			process.stderr.write(`\n  Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} (timeout: ${Math.round(renderTimeout / 1000)}s)...\n`);
-		}
 
 		// Process charts sequentially to avoid overloading browser
 		// Sequential processing is more reliable for complex charts
@@ -74,11 +67,6 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			}
 
 			try {
-				// Show progress for this chart
-				if (showProgress) {
-					process.stderr.write(`    [${index + 1}/${totalCharts}] Rendering chart ${index + 1}...`);
-				}
-				
 				// Generate short 8-character hash for filename
 				const contentHash = generateContentHash(mermaidCode, 8);
 				// Wrap in Promise.race with configurable timeout to prevent stalling
@@ -99,20 +87,11 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				const maxWidthPercent = MERMAID_CONSTANTS.MAX_CHART_WIDTH_PERCENT;
 				const imageMarkdown = `<div class="${MERMAID_CONSTANTS.CONTAINER_CLASS}" style="max-width: ${maxWidthPercent}%; margin: 0.5em auto; text-align: center;"><img src="${imageDataUri}" alt="Mermaid Chart ${index + 1}" style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" /></div>`;
 
-				// Show success for this chart
-				if (showProgress) {
-					process.stderr.write(` done\n`);
-				}
-
 				results.push({ fullMatch, imageMarkdown, imagePath });
 			} catch (error) {
 				// Remove the failed Mermaid diagram from markdown instead of including broken image
 				const errorMessage = error instanceof Error ? error.message : String(error);
 				warnings.push(`Skipping Mermaid chart ${index + 1} due to syntax error: ${errorMessage}`);
-				// Show failure for this chart
-				if (showProgress) {
-					process.stderr.write(` FAILED\n`);
-				}
 				// Return empty markdown to remove the code block
 				results.push({ fullMatch, imageMarkdown: '', imagePath: null });
 			}
@@ -124,11 +103,6 @@ export class MermaidProcessorService implements IMermaidProcessor {
 			if (result.imagePath) {
 				imageFiles.push(result.imagePath);
 			}
-		}
-
-		// Show completion message
-		if (totalCharts > 0 && showProgress) {
-			process.stderr.write(`  All ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} processed\n\n`);
 		}
 
 		return {
