@@ -51,9 +51,8 @@ export class MermaidProcessorService implements IMermaidProcessor {
 		// Get timeout from config or use default constant
 		const renderTimeout = config?.mermaid?.timeout ?? MERMAID_CONSTANTS.RENDER_TIMEOUT_MS;
 
-		// Process charts in parallel batches for speed (max 6 concurrent)
-		const BATCH_SIZE = 6;
-		const chartPromises = matches.map(async (match, index) => {
+		// Helper function to process a single chart (not started until called)
+		const processChart = async (match: RegExpMatchArray, index: number) => {
 			const mermaidCode = match[1]?.trim();
 			const fullMatch = match[0];
 
@@ -91,15 +90,12 @@ export class MermaidProcessorService implements IMermaidProcessor {
 				// Return empty markdown to remove the code block
 				return { fullMatch, imageMarkdown: '', imagePath: null };
 			}
-		});
+		};
 
-		// Process in batches to avoid browser overload
-		const results: Array<{ fullMatch: string; imageMarkdown: string; imagePath: string | null }> = [];
-		for (let i = 0; i < chartPromises.length; i += BATCH_SIZE) {
-			const batch = chartPromises.slice(i, i + BATCH_SIZE);
-			const batchResults = await Promise.all(batch);
-			results.push(...batchResults);
-		}
+		// Process ALL charts in parallel for maximum speed
+		const results = await Promise.all(
+			matches.map((match, index) => processChart(match, index))
+		);
 
 		// Apply results to markdown and collect image files
 		for (const result of results) {
