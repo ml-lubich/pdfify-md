@@ -52,27 +52,31 @@ export class MermaidProcessorService implements IMermaidProcessor {
 		// Get timeout from config or use default constant
 		const renderTimeout = config?.mermaid?.timeout ?? MERMAID_CONSTANTS.RENDER_TIMEOUT_MS;
 		// Always show progress for Mermaid charts (useful for debugging slow charts)
-		const showProgress = process.stdout.isTTY;
+		// Use stderr to bypass Listr's stdout capture
+		const showProgress = process.stderr.isTTY;
 		if (totalCharts > 0 && showProgress) {
-			console.log(`\n  Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} (timeout: ${Math.round(renderTimeout / 1000)}s)...`);
+			process.stderr.write(`\n  Processing ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} (timeout: ${Math.round(renderTimeout / 1000)}s)...\n`);
 		}
 
-		// Process charts in batches to avoid overloading browser (max 6 concurrent pages)
-		// Increased batch size for faster processing while still preventing overload
-		const BATCH_SIZE = 6;
-		const chartPromises = matches.map(async (match, index) => {
+		// Process charts sequentially to avoid overloading browser
+		// Sequential processing is more reliable for complex charts
+		const results: Array<{ fullMatch: string; imageMarkdown: string; imagePath: string | null }> = [];
+		
+		for (let index = 0; index < matches.length; index++) {
+			const match = matches[index]!;
 			const mermaidCode = match[1]?.trim();
 			const fullMatch = match[0];
 
 			if (!mermaidCode) {
 				warnings.push(`Skipping empty Mermaid chart at index ${index}`);
-				return { fullMatch, imageMarkdown: '', imagePath: null as string | null };
+				results.push({ fullMatch, imageMarkdown: '', imagePath: null });
+				continue;
 			}
 
 			try {
 				// Show progress for this chart
 				if (showProgress) {
-					process.stdout.write(`    [${index + 1}/${totalCharts}] Rendering chart ${index + 1}...`);
+					process.stderr.write(`    [${index + 1}/${totalCharts}] Rendering chart ${index + 1}...`);
 				}
 				
 				// Generate short 8-character hash for filename
@@ -97,30 +101,21 @@ export class MermaidProcessorService implements IMermaidProcessor {
 
 				// Show success for this chart
 				if (showProgress) {
-					process.stdout.write(` done\n`);
+					process.stderr.write(` done\n`);
 				}
 
-				return { fullMatch, imageMarkdown, imagePath };
+				results.push({ fullMatch, imageMarkdown, imagePath });
 			} catch (error) {
 				// Remove the failed Mermaid diagram from markdown instead of including broken image
 				const errorMessage = error instanceof Error ? error.message : String(error);
 				warnings.push(`Skipping Mermaid chart ${index + 1} due to syntax error: ${errorMessage}`);
 				// Show failure for this chart
 				if (showProgress) {
-					process.stdout.write(` FAILED\n`);
+					process.stderr.write(` FAILED\n`);
 				}
 				// Return empty markdown to remove the code block
-				return { fullMatch, imageMarkdown: '', imagePath: null };
+				results.push({ fullMatch, imageMarkdown: '', imagePath: null });
 			}
-		});
-
-		// Process charts in batches to avoid browser overload
-		// Process 3 charts at a time instead of all at once
-		const results: Array<{ fullMatch: string; imageMarkdown: string; imagePath: string | null }> = [];
-		for (let i = 0; i < chartPromises.length; i += BATCH_SIZE) {
-			const batch = chartPromises.slice(i, i + BATCH_SIZE);
-			const batchResults = await Promise.all(batch);
-			results.push(...batchResults);
 		}
 
 		// Apply results to markdown and collect image files
@@ -133,7 +128,7 @@ export class MermaidProcessorService implements IMermaidProcessor {
 
 		// Show completion message
 		if (totalCharts > 0 && showProgress) {
-			console.log(`  All ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} processed\n`);
+			process.stderr.write(`  All ${totalCharts} Mermaid chart${totalCharts > 1 ? 's' : ''} processed\n\n`);
 		}
 
 		return {
