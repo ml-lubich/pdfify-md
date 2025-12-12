@@ -37,7 +37,8 @@
     "test:type-check": "tsc -p tsconfig.type-test.json --noEmit",
     "release": "npm test && npx standard-version --infile=CHANGELOG.md && git push --follow-tags origin master && npm publish",
     "release:both": "npm run release && node wrapper-package/sync-version.js && cd wrapper-package && npm publish",
-    "loc": "npx cloc src --exclude-dir=test --by-file"
+    "loc": "npx cloc src --exclude-dir=test --by-file",
+    "test:examples": "node dist/cli.js examples/*.md"
   },
   "bin": {
     "pdfify-md": "dist/cli.js"
@@ -92,6 +93,10 @@
       "ts-node/register"
     ],
     "verbose": true
+  },
+  "ts-node": {
+    "project": "./tsconfig.test.json",
+    "transpileOnly": true
   },
   "prettier": {
     "printWidth": 120,

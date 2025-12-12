@@ -10,17 +10,18 @@ body {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
 		'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	line-height: 1.6;
-	font-size: 0.6875em; /* 11 pt */
+	font-size: 0.6875em;
+	/* 11 pt */
 	color: #111;
 	margin: 0;
 }
 
-body > :first-child {
+body> :first-child {
 	padding-top: 0;
 	margin-top: 0;
 }
 
-body > :last-child {
+body> :last-child {
 	margin-bottom: 0;
 	padding-bottom: 0;
 }
@@ -118,7 +119,8 @@ img {
 .mermaid-chart-container img {
 	margin: 0 auto;
 	max-width: 100%;
-	max-height: 80vh; /* Constrain height for vertical flowcharts */
+	max-height: 80vh;
+	/* Constrain height for vertical flowcharts */
 	width: auto;
 	height: auto;
 	display: block;
@@ -128,16 +130,70 @@ img {
 table {
 	border-spacing: 0;
 	border-collapse: collapse;
-	display: block;
+	display: table;
 	margin: 0 0 1em;
 	width: 100%;
-	overflow: auto;
+	table-layout: fixed;
+	/* Enforce strict width */
 }
 
 table th,
 table td {
-	padding: 0.5em 1em;
+	padding: 0.3em 0.5em;
+	/* Reduce padding for more space */
 	border: 1px solid gainsboro;
+	word-break: break-word;
+	/* Prevent content cutoff */
+	overflow-wrap: break-word;
+	font-size: 0.9em;
+	/* Slightly smaller font for table content */
+}
+
+table {
+	font-size: 0.8em;
+}
+
+table th,
+table td {
+	padding: 0.25em 0.5em;
+}
+
+@media print {
+	@page {
+		margin: 1cm;
+		size: auto;
+	}
+
+	body {
+		font-size: 10pt;
+	}
+
+	table {
+		page-break-inside: auto;
+		width: 100% !important;
+		font-size: 0.65em;
+		/* Significantly smaller to fit wide tables */
+	}
+
+	table th,
+	table td {
+		word-break: break-all;
+		/* Force break anywhere if needed */
+		white-space: normal;
+	}
+
+	tr {
+		page-break-inside: avoid;
+		page-break-after: auto;
+	}
+
+	thead {
+		display: table-header-group;
+	}
+
+	tfoot {
+		display: table-footer-group;
+	}
 }
 
 table th {
