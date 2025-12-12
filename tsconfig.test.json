@@ -11,5 +11,13 @@
 	},
 	"include": [
 		"src"
-	]
+	],
+	"ts-node": {
+		"transpileOnly": true,
+		"experimentalResolver": true,
+		"files": true,
+		"compilerOptions": {
+			"module": "commonjs"
+		}
+	}
 }

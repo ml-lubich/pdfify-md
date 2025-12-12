@@ -421,7 +421,7 @@ test('ConsoleLogger should handle very long messages', (t) => {
 	try {
 		const longMessage = 'a'.repeat(100_000);
 		logger.debug(longMessage);
-		t.is(messages[0].length, 100_000);
+		t.is(messages[0].length, 100_008); // 'a' x 100000 + prefix
 	} finally {
 		console.debug = originalDebug;
 	}

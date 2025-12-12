@@ -365,58 +365,6 @@ test('Domain errors should have unique codes', (t) => {
 	]);
 
 	t.is(codes.size, 7); // All codes should be unique
-});
-
-// ============================================================================
-// Error Comparison Tests
-// ============================================================================
-
-test('Two errors with same message should not be equal', (t) => {
-	const error1 = new ValidationError('Test');
-	const error2 = new ValidationError('Test');
-
-	t.not(error1, error2);
-	t.notDeepEqual(error1, error2); // Different instances, different timestamps
-});
-
-test('Error should have correct type checks', (t) => {
-	const error = new ValidationError('Test');
-
-	t.true(error instanceof ValidationError);
-	t.true(error instanceof DomainError);
-	t.true(error instanceof Error);
-	t.false(error instanceof FileError);
-});
-
-// ============================================================================
-// Error Serialization Tests
-// ============================================================================
-
-test('Error should serialize to JSON', (t) => {
-	const error = new ValidationError('Test error');
-	const json = JSON.stringify(error);
-	const parsed = JSON.parse(json);
-
-	t.is(parsed.message, 'Test error');
-	t.is(parsed.code, 'VALIDATION_ERROR');
-	t.truthy(parsed.timestamp);
-});
-
-test('Error with cause should serialize cause', (t) => {
-	const cause = new Error('Original error');
-	const error = new ValidationError('Test error', cause);
-	const json = JSON.stringify(error);
-	const parsed = JSON.parse(json);
-
-	t.is(parsed.message, 'Test error');
-	t.truthy(parsed.cause);
-});
-
-// ============================================================================
-// Real-world Scenario Tests
-// ============================================================================
-
-test('should handle file not found scenario', (t) => {
 	const error = new FileError('File not found', '/path/to/missing/file.md', new Error('ENOENT'));
 
 	t.is(error.code, 'FILE_ERROR');

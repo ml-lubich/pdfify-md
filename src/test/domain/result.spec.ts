@@ -288,7 +288,7 @@ test('unwrap() should preserve error type', (t) => {
 	const typesError = new TypeError('Type error');
 	const result = err(typesError);
 
-	t.throws(() => unwrap(result), TypeError);
+	t.throws(() => unwrap(result), { instanceOf: TypeError });
 	t.throws(() => unwrap(result), { message: 'Type error' });
 });
 
@@ -328,7 +328,7 @@ test('unwrapOrElse() should not call function for Ok result', (t) => {
 	t.is(value, 42);
 });
 
-test('unwrapOrElse() should call function for Err result', (t) => {
+test('unwrapOrElse() should call function for Err result (alternative)', (t) => {
 	const error = new Error('Test error');
 	const result = err(error);
 	let called = false;

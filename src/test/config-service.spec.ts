@@ -159,7 +159,7 @@ test('mergeCliArgs should convert CLI flags to config keys', (t) => {
 	const arguments_ = {
 		'--document-title': 'CLI Title',
 		'--highlight-style': 'monokai',
-		'--port': '3000',
+		'--port': 3000,
 		_: [] as string[],
 	};
 

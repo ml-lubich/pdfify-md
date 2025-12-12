@@ -35,7 +35,6 @@ export const defaultConfig: PdfConfig = {
 			bottom: '30mm',
 			left: '20mm',
 		},
-		displayHeaderFooter: false,
 	},
 	launch_options: {},
 	gray_matter_options: {
