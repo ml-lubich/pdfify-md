@@ -332,6 +332,12 @@ pdfify-md --watch document.md
 pdfify-md chapter1.md chapter2.md chapter3.md
 ```
 
+#### Directory Processing
+Pass a directory to process all Markdown files recursively:
+```bash
+pdfify-md ./docs
+```
+
 ### Example Files
 
 Check out the [`examples/`](./examples/) directory for complete example files:

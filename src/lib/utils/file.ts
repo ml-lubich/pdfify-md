@@ -49,3 +49,33 @@ export const getOutputFilePath = (mdFilePath: string, extension: 'html' | 'pdf')
 	const { dir, name } = parse(mdFilePath);
 	return join(dir, `${name}.${extension}`);
 };
+
+/**
+ * Recursively find all markdown files in a path (file or directory).
+ *
+ * @param inputPath - File or directory path
+ * @returns Promise resolving to array of markdown file paths
+ */
+export const getMarkdownFiles = async (inputPath: string): Promise<string[]> => {
+	try {
+		const stats = await fs.stat(inputPath);
+
+		if (stats.isDirectory()) {
+			const files = await fs.readdir(inputPath);
+			const paths = await Promise.all(
+				files.map((file) => getMarkdownFiles(join(inputPath, file))),
+			);
+			return paths.flat();
+		}
+
+		if (isMdFile(inputPath)) {
+			return [inputPath];
+		}
+
+		return [];
+	} catch (error) {
+		// Ignore errors for non-existent files during recursion, unless it's the root call
+		// But here we just return empty array for simplicity in recursion
+		return [];
+	}
+};

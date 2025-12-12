@@ -13,6 +13,7 @@ import Listr from 'listr';
 import { readFileSync } from 'node:fs';
 import { type PackageJson } from '../../index.js';
 import { type Config, defaultConfig } from '../config.js';
+import { getMarkdownFiles } from '../utils/file.js';
 import { convertMdToPdf } from '../core/converter.js';
 import { ConfigService } from '../services/ConfigService.js';
 import { ServerService } from '../services/ServerService.js';
@@ -64,7 +65,8 @@ export class CliService {
 		}
 
 		// Get input files or stdin
-		const files = arguments_._ || [];
+		const inputArgs = arguments_._ || [];
+		const files = (await Promise.all(inputArgs.map((arg) => getMarkdownFiles(arg)))).flat();
 		const stdin = await getStdin();
 
 		if (files.length === 0 && !stdin) {
@@ -197,7 +199,7 @@ export class CliService {
 		arguments_: CliArgs,
 		cleanup: () => Promise<void>,
 	): Promise<void> {
-			const getListrTask = (file: string) => {
+		const getListrTask = (file: string) => {
 			// Windows-compatible path display - use basename for long paths to avoid truncation
 			const displayPath = file.length > 60 ? basename(file) : file;
 			return {
@@ -220,8 +222,8 @@ export class CliService {
 			// Set environment variable to indicate CLI context for logging suppression
 			process.env.LISTR_DISABLE_OUTPUT = 'false';
 			// Process all files concurrently
-			await new Listr(files.map(getListrTask), { 
-				concurrent: true, 
+			await new Listr(files.map(getListrTask), {
+				concurrent: true,
 				exitOnError: false,
 				renderer: process.stdout.isTTY ? 'default' : 'verbose'
 			}).run();
