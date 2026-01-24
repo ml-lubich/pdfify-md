@@ -67,7 +67,13 @@ export class CliService {
 		// Get input files or stdin
 		const inputArgs = arguments_._ || [];
 		const files = (await Promise.all(inputArgs.map((arg) => getMarkdownFiles(arg)))).flat();
-		const stdin = await getStdin();
+		
+		// Only read stdin if no files provided AND stdin is not a TTY (piped input)
+		// This prevents hanging when running interactively with file arguments
+		let stdin = '';
+		if (files.length === 0 && !process.stdin.isTTY) {
+			stdin = await getStdin();
+		}
 
 		if (files.length === 0 && !stdin) {
 			return help();

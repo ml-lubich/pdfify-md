@@ -41,6 +41,9 @@ yarn-error.log*
 *.tmp
 *.temp
 
+# Project status reports (generated)
+PROJECT_STATUS.md
+
 # OS files
 Thumbs.db
 .DS_Store
