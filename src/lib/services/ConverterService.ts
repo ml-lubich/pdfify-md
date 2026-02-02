@@ -364,8 +364,10 @@ export class ConverterService {
 				process.stdout.write(output.content);
 			}
 		} else {
-			await this.fileService.writeFile(output.filename, output.content);
-			this.printOutputPath(output.filename, output);
+			const outPath = resolve(output.filename);
+			await this.fileService.ensureDirectory(dirname(outPath));
+			await this.fileService.writeFile(outPath, output.content);
+			this.printOutputPath(outPath, output);
 		}
 	}
 

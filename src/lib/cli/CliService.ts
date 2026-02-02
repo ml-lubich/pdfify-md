@@ -69,10 +69,15 @@ export class CliService {
 		const files = (await Promise.all(inputArgs.map((arg) => getMarkdownFiles(arg)))).flat();
 		
 		// Only read stdin if no files provided AND stdin is not a TTY (piped input)
-		// This prevents hanging when running interactively with file arguments
+		// This prevents hanging when running interactively with file arguments.
+		// Use a timeout so we never block indefinitely even when reading stdin.
+		const STDIN_TIMEOUT_MS = 10_000;
 		let stdin = '';
 		if (files.length === 0 && !process.stdin.isTTY) {
-			stdin = await getStdin();
+			stdin = await Promise.race([
+				getStdin(),
+				new Promise<string>((resolve) => setTimeout(() => resolve(''), STDIN_TIMEOUT_MS)),
+			]);
 		}
 
 		if (files.length === 0 && !stdin) {

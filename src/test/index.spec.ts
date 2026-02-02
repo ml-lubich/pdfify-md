@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import test from 'ava';
-import { mdToPdf } from './...js';
+import { mdToPdf } from '../index.js';
 
 test('mdToPdf should throw error when input is missing both content and path', async (t) => {
 	await t.throwsAsync(

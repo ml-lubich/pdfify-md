@@ -2,7 +2,7 @@ import { readFileSync, unlinkSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import test from 'ava';
 // @ts-expect-error - pdfjs-dist types may not be available in test environment
-import { getDocument } from 'pdfjs-dist/legacy/build/pdf';
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs';
 // @ts-expect-error - pdfjs-dist types may not be available in test environment
 import { type TextItem } from 'pdfjs-dist/types/src/display/api';
 import { mdToPdf } from '../index.js';

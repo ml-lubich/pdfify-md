@@ -9,7 +9,7 @@ import { defaultConfig } from '../lib/config.js';
  */
 
 const createTempDir = async (): Promise<string> => {
-    const tempDir = join(process.cwd(), `test-cli-${Date.now()}`);
+    const tempDir = join(process.cwd(), `test-cli-${Date.now()}-${process.pid}-${Math.random().toString(36).slice(2, 9)}`);
     await fs.mkdir(tempDir, { recursive: true });
     return tempDir;
 };
@@ -30,7 +30,7 @@ const createNestedStructure = async (baseDir: string) => {
     await fs.writeFile(join(baseDir, 'folder1', 'README.txt'), 'Should be ignored');
 };
 
-test('CLI should recursively process all markdown files in folder', async (t) => {
+test.serial('CLI should recursively process all markdown files in folder', async (t) => {
     const tempDir = await createTempDir();
 
     try {
@@ -67,7 +67,7 @@ test('CLI should recursively process all markdown files in folder', async (t) =>
     }
 });
 
-test('CLI should apply config file settings to all files in recursive folder', async (t) => {
+test.serial('CLI should apply config file settings to all files in recursive folder', async (t) => {
     const tempDir = await createTempDir();
 
     try {
@@ -106,7 +106,7 @@ test('CLI should apply config file settings to all files in recursive folder', a
     }
 });
 
-test('CLI should handle empty directories gracefully', async (t) => {
+test.serial('CLI should handle empty directories gracefully', async (t) => {
     const tempDir = await createTempDir();
 
     try {
@@ -131,7 +131,7 @@ test('CLI should handle empty directories gracefully', async (t) => {
     }
 });
 
-test('CLI should handle mixed file and folder arguments', async (t) => {
+test.serial('CLI should handle mixed file and folder arguments', async (t) => {
     const tempDir = await createTempDir();
 
     try {
@@ -165,7 +165,7 @@ test('CLI should handle mixed file and folder arguments', async (t) => {
     }
 });
 
-test('CLI should respect CLI arguments over config file for all recursive files', async (t) => {
+test.serial('CLI should respect CLI arguments over config file for all recursive files', async (t) => {
     const tempDir = await createTempDir();
 
     try {
