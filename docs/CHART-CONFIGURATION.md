@@ -57,7 +57,7 @@ The system automatically detects chart orientation using two methods:
 
 ### Option 1: Config File (Recommended - Persistent)
 
-Create a `markpdf.config.json` file:
+Create a `pdfify-md.config.json` file:
 
 ```json
 {
@@ -72,14 +72,14 @@ Create a `markpdf.config.json` file:
 
 Then use it:
 ```bash
-markpdf file.md --config-file markpdf.config.json
+pdfify-md file.md --config-file pdfify-md.config.json
 ```
 
 ### Option 2: CLI Flags (One-time, Not Persistent)
 
 ```bash
 # These settings only apply to this single run
-markpdf file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4
+pdfify-md file.md --mermaid-horizontal-width 1000 --mermaid-resolution 4
 ```
 
 **CLI flags are NOT persistent** - you need to specify them each time, or use a config file.
@@ -104,13 +104,13 @@ mermaid:
 
 ```bash
 # Use persistent config file
-markpdf file.md --config-file markpdf.config.json
+pdfify-md file.md --config-file pdfify-md.config.json
 
 # One-time override (not saved)
-markpdf file.md --mermaid-horizontal-width 1000
+pdfify-md file.md --mermaid-horizontal-width 1000
 
 # Combine: use config file but override one setting
-markpdf file.md --config-file markpdf.config.json --mermaid-resolution 4
+pdfify-md file.md --config-file pdfify-md.config.json --mermaid-resolution 4
 ```
 
 ## Configuration Priority

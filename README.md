@@ -4,6 +4,8 @@
 
 **A modern, powerful CLI tool for converting Markdown documents to beautiful PDFs**
 
+**Source:** [github.com/ml-lubich/pdfify-md](https://github.com/ml-lubich/pdfify-md)
+
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0-brightgreen)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![License: Non-Commercial](https://img.shields.io/badge/License-Non--Commercial-blue.svg)](LICENSE)
@@ -75,8 +77,8 @@ npm install -g pdfify-md
 Or clone and install locally:
 
 ```bash
-git clone https://github.com/ml-lubich/markpdf.git
-cd markpdf
+git clone https://github.com/ml-lubich/pdfify-md.git
+cd pdfify-md
 npm install
 npm link
 ```
@@ -142,7 +144,7 @@ Control chart sizes and resolution. **These parameters do NOT conflict** - they 
 pdfify-md file.md --mermaid-horizontal-width 1000 -r 10
 
 # Persistent: Use config file
-pdfify-md file.md --config-file markpdf.config.json
+pdfify-md file.md --config-file pdfify-md.config.json
 ```
 
 **For persistent settings, use a config file** (see [Chart Configuration Guide](docs/CHART-CONFIGURATION.md)).
@@ -276,8 +278,8 @@ This tool uses a modern, modular architecture:
 ### Setup
 
 ```bash
-git clone https://github.com/ml-lubich/markpdf.git
-cd markpdf
+git clone https://github.com/ml-lubich/pdfify-md.git
+cd pdfify-md
 npm install
 ```
 

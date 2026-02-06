@@ -657,7 +657,7 @@ test('ConverterService should handle large markdown files efficiently', async (t
 	} finally {
 		await serverService.stop();
 	}
-}).timeout = 90_000;
+}).timeout = 60_000;
 
 // ============================================================================
 // Integration Tests

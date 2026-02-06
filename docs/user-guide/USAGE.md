@@ -53,8 +53,8 @@ const pdf = await mdToPdf({ path: 'document.md' });
 ### Development Installation
 
 ```bash
-git clone https://github.com/ml-lubich/markpdf.git
-cd markpdf
+git clone https://github.com/ml-lubich/pdfify-md.git
+cd pdfify-md
 npm install
 npm run build
 npm link

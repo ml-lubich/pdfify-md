@@ -12,7 +12,7 @@ highlight_style: github
 
 # 🎨 Mermaid Diagrams Demo
 
-This document showcases the beautiful Mermaid diagrams that can be rendered in PDF format using markpdf.
+This document showcases the beautiful Mermaid diagrams that can be rendered in PDF format using pdfify-md.
 
 ## 📊 Flowchart
 

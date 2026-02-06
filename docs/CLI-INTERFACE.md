@@ -2,7 +2,7 @@
 
 ## Overview
 
-The markpdf CLI provides a command-line interface for converting Markdown files to PDF or HTML. It supports single files, multiple files, stdin input, and watch mode.
+The pdfify-md CLI provides a command-line interface for converting Markdown files to PDF or HTML. It supports single files, multiple files, stdin input, and watch mode.
 
 ## 📋 Table of Contents
 
@@ -46,7 +46,7 @@ The markpdf CLI provides a command-line interface for converting Markdown files 
 ## Command Syntax
 
 ```bash
-markpdf [options] [files...]
+pdfify-md [options] [files...]
 ```
 
 ## Basic Usage
@@ -54,7 +54,7 @@ markpdf [options] [files...]
 ### Convert Single File
 
 ```bash
-markpdf document.md
+pdfify-md document.md
 ```
 
 Converts `document.md` to `document.pdf` in the same directory.
@@ -62,8 +62,8 @@ Converts `document.md` to `document.pdf` in the same directory.
 ### Convert Multiple Files
 
 ```bash
-markpdf *.md
-markpdf chapter1.md chapter2.md chapter3.md
+pdfify-md *.md
+pdfify-md chapter1.md chapter2.md chapter3.md
 ```
 
 Converts all specified files. Files are processed in parallel for better performance.
@@ -71,8 +71,8 @@ Converts all specified files. Files are processed in parallel for better perform
 ### Convert from Stdin
 
 ```bash
-cat document.md | markpdf > output.pdf
-echo "# Hello" | markpdf > output.pdf
+cat document.md | pdfify-md > output.pdf
+echo "# Hello" | pdfify-md > output.pdf
 ```
 
 Reads markdown from stdin and writes PDF to stdout.
@@ -80,7 +80,7 @@ Reads markdown from stdin and writes PDF to stdout.
 ### Watch Mode
 
 ```bash
-markpdf --watch document.md
+pdfify-md --watch document.md
 ```
 
 Watches for file changes and automatically regenerates the PDF when the markdown file is modified.
@@ -94,7 +94,7 @@ Watches for file changes and automatically regenerates the PDF when the markdown
 Display help information and exit.
 
 ```bash
-markpdf --help
+pdfify-md --help
 ```
 
 #### `-v, --version`
@@ -102,7 +102,7 @@ markpdf --help
 Display version information and exit.
 
 ```bash
-markpdf --version
+pdfify-md --version
 ```
 
 #### `-w, --watch`
@@ -110,7 +110,7 @@ markpdf --version
 Enable watch mode. Automatically regenerates output when input files change.
 
 ```bash
-markpdf --watch document.md
+pdfify-md --watch document.md
 ```
 
 **Note:** The server remains active in watch mode. Press Ctrl+C to stop.
@@ -120,7 +120,7 @@ markpdf --watch document.md
 Configure Chokidar watch options (JSON string).
 
 ```bash
-markpdf --watch document.md --watch-options '{"atomic": true, "ignored": ["*.tmp"]}'
+pdfify-md --watch document.md --watch-options '{"atomic": true, "ignored": ["*.tmp"]}'
 ```
 
 Common options:
@@ -135,7 +135,7 @@ Common options:
 Path to a JSON or JavaScript configuration file.
 
 ```bash
-markpdf document.md --config-file ./pdf-config.json
+pdfify-md document.md --config-file ./pdf-config.json
 ```
 
 The config file should export a configuration object:
@@ -167,7 +167,7 @@ module.exports = {
 Base directory to be served by the file server. Defaults to the markdown file's directory or current working directory.
 
 ```bash
-markpdf document.md --basedir ./docs
+pdfify-md document.md --basedir ./docs
 ```
 
 **Use case:** When your markdown references relative paths (images, stylesheets), this ensures they resolve correctly.
@@ -179,8 +179,8 @@ markpdf document.md --basedir ./docs
 Add a stylesheet (can be used multiple times). Can be a local file path or HTTP URL.
 
 ```bash
-markpdf document.md --stylesheet custom.css --stylesheet theme.css
-markpdf document.md --stylesheet https://cdn.example.com/style.css
+pdfify-md document.md --stylesheet custom.css --stylesheet theme.css
+pdfify-md document.md --stylesheet https://cdn.example.com/style.css
 ```
 
 #### `--css <css>`
@@ -188,7 +188,7 @@ markpdf document.md --stylesheet https://cdn.example.com/style.css
 Inline CSS styles as a string.
 
 ```bash
-markpdf document.md --css "body { font-family: 'Georgia', serif; font-size: 12pt; }"
+pdfify-md document.md --css "body { font-family: 'Georgia', serif; font-size: 12pt; }"
 ```
 
 #### `--highlight-style <name>`
@@ -196,7 +196,7 @@ markpdf document.md --css "body { font-family: 'Georgia', serif; font-size: 12pt
 Code highlighting style from highlight.js. Default: `github`.
 
 ```bash
-markpdf document.md --highlight-style monokai
+pdfify-md document.md --highlight-style monokai
 ```
 
 Available styles include: `github`, `monokai`, `vs`, `atom-one-dark`, `dracula`, etc.
@@ -206,7 +206,7 @@ Available styles include: `github`, `monokai`, `vs`, `atom-one-dark`, `dracula`,
 Add a class to the body tag (can be used multiple times).
 
 ```bash
-markpdf document.md --body-class markdown-body --body-class custom-theme
+pdfify-md document.md --body-class markdown-body --body-class custom-theme
 ```
 
 ### Document Options
@@ -216,7 +216,7 @@ markpdf document.md --body-class markdown-body --body-class custom-theme
 Set the HTML document title.
 
 ```bash
-markpdf document.md --document-title "My Document"
+pdfify-md document.md --document-title "My Document"
 ```
 
 #### `--page-media-type <type>`
@@ -224,7 +224,7 @@ markpdf document.md --document-title "My Document"
 Media type to emulate: `screen` or `print`. Default: `screen`.
 
 ```bash
-markpdf document.md --page-media-type print
+pdfify-md document.md --page-media-type print
 ```
 
 **Note:** `print` media type applies print-specific CSS rules.
@@ -236,7 +236,7 @@ markpdf document.md --page-media-type print
 Custom HTML to PDF conversion options as a JSON string. Legacy option, use `--pdf-options` instead.
 
 ```bash
-markpdf document.md --html-pdf-options '{"format": "A4"}'
+pdfify-md document.md --html-pdf-options '{"format": "A4"}'
 ```
 
 **Note:** This option is deprecated. Use `--pdf-options` instead for consistency.
@@ -246,7 +246,7 @@ markpdf document.md --html-pdf-options '{"format": "A4"}'
 Custom PDF options as a JSON string. These are Puppeteer PDF options.
 
 ```bash
-markpdf document.md --pdf-options '{"format": "Letter", "margin": {"top": "1in", "right": "1in", "bottom": "1in", "left": "1in"}}'
+pdfify-md document.md --pdf-options '{"format": "Letter", "margin": {"top": "1in", "right": "1in", "bottom": "1in", "left": "1in"}}'
 ```
 
 Common options:
@@ -262,7 +262,7 @@ Common options:
 #### Header/Footer Templates
 
 ```bash
-markpdf document.md --pdf-options '{
+pdfify-md document.md --pdf-options '{
   "displayHeaderFooter": true,
   "headerTemplate": "<div style=\"font-size: 10px; text-align: center; width: 100%;\">Document Title</div>",
   "footerTemplate": "<div style=\"font-size: 10px; text-align: center; width: 100%;\">Page <span class=\"pageNumber\"></span> of <span class=\"totalPages\"></span></div>"
@@ -280,7 +280,7 @@ Special classes in templates:
 Custom options for the Marked parser (JSON string).
 
 ```bash
-markpdf document.md --marked-options '{"gfm": true, "breaks": false}'
+pdfify-md document.md --marked-options '{"gfm": true, "breaks": false}'
 ```
 
 #### `--launch-options <json>`
@@ -288,7 +288,7 @@ markpdf document.md --marked-options '{"gfm": true, "breaks": false}'
 Custom Puppeteer launch options (JSON string).
 
 ```bash
-markpdf document.md --launch-options '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}'
+pdfify-md document.md --launch-options '{"args": ["--no-sandbox", "--disable-setuid-sandbox"]}'
 ```
 
 **Warning:** Only use this if you understand the security implications.
@@ -299,7 +299,7 @@ Custom options for gray-matter (front-matter parser). By default, JavaScript exe
 
 ```bash
 # Enable JavaScript in front-matter (not recommended)
-markpdf document.md --gray-matter-options '{}'
+pdfify-md document.md --gray-matter-options '{}'
 ```
 
 #### `--port <number>`
@@ -307,7 +307,7 @@ markpdf document.md --gray-matter-options '{}'
 Set the port for the HTTP server. Default: random available port.
 
 ```bash
-markpdf document.md --port 3000
+pdfify-md document.md --port 3000
 ```
 
 #### `--md-file-encoding <encoding>`
@@ -315,7 +315,7 @@ markpdf document.md --port 3000
 File encoding for markdown files. Default: `utf-8`.
 
 ```bash
-markpdf document.md --md-file-encoding utf-8
+pdfify-md document.md --md-file-encoding utf-8
 ```
 
 #### `--stylesheet-encoding <encoding>`
@@ -323,7 +323,7 @@ markpdf document.md --md-file-encoding utf-8
 File encoding for stylesheets. Default: `utf-8`.
 
 ```bash
-markpdf document.md --stylesheet-encoding utf-8
+pdfify-md document.md --stylesheet-encoding utf-8
 ```
 
 ### Output Options
@@ -333,7 +333,7 @@ markpdf document.md --stylesheet-encoding utf-8
 Generate HTML output instead of PDF.
 
 ```bash
-markpdf document.md --as-html
+pdfify-md document.md --as-html
 ```
 
 Outputs `document.html` instead of `document.pdf`.
@@ -343,7 +343,7 @@ Outputs `document.html` instead of `document.pdf`.
 Open browser with devtools instead of generating PDF. Useful for debugging.
 
 ```bash
-markpdf document.md --devtools
+pdfify-md document.md --devtools
 ```
 
 **Note:** No output file is generated in devtools mode.
@@ -364,7 +364,7 @@ Example:
 # Front matter has format: Letter
 # CLI has format: Legal
 # Final format: Legal (CLI wins)
-markpdf document.md --config-file config.json --pdf-options '{"format": "Legal"}'
+pdfify-md document.md --config-file config.json --pdf-options '{"format": "Legal"}'
 ```
 
 ## Front Matter Configuration
@@ -394,13 +394,13 @@ Content here...
 ### Basic PDF Generation
 
 ```bash
-markpdf README.md
+pdfify-md README.md
 ```
 
 ### Custom Styling
 
 ```bash
-markpdf document.md \
+pdfify-md document.md \
   --stylesheet custom.css \
   --css "body { font-family: 'Georgia', serif; }" \
   --highlight-style github
@@ -409,13 +409,13 @@ markpdf document.md \
 ### Custom PDF Format
 
 ```bash
-markpdf document.md --pdf-options '{"format": "Letter", "landscape": true}'
+pdfify-md document.md --pdf-options '{"format": "Letter", "landscape": true}'
 ```
 
 ### Watch Mode with Custom Options
 
 ```bash
-markpdf --watch document.md \
+pdfify-md --watch document.md \
   --stylesheet theme.css \
   --highlight-style monokai
 ```
@@ -423,7 +423,7 @@ markpdf --watch document.md \
 ### Multiple Files with Custom Config
 
 ```bash
-markpdf chapter*.md \
+pdfify-md chapter*.md \
   --config-file book-config.json \
   --pdf-options '{"format": "A4"}'
 ```
@@ -431,13 +431,13 @@ markpdf chapter*.md \
 ### Stdin to Stdout
 
 ```bash
-cat document.md | markpdf > output.pdf
+cat document.md | pdfify-md > output.pdf
 ```
 
 ### Generate HTML
 
 ```bash
-markpdf document.md --as-html
+pdfify-md document.md --as-html
 ```
 
 ## Exit Codes
@@ -450,14 +450,14 @@ markpdf document.md --as-html
 ### File Not Found
 
 ```bash
-markpdf nonexistent.md
+pdfify-md nonexistent.md
 # Error: ENOENT: no such file or directory
 ```
 
 ### Invalid Configuration
 
 ```bash
-markpdf document.md --pdf-options 'invalid json'
+pdfify-md document.md --pdf-options 'invalid json'
 # Error: Failed to parse --pdf-options JSON
 ```
 
@@ -484,7 +484,7 @@ If conversion fails for a file in a batch, other files continue processing. Erro
 ### Port Already in Use
 
 ```bash
-markpdf document.md --port 3001
+pdfify-md document.md --port 3001
 ```
 
 ### Missing Dependencies
@@ -500,7 +500,7 @@ npm install
 Try running with explicit launch options:
 
 ```bash
-markpdf document.md --launch-options '{"args": ["--no-sandbox"]}'
+pdfify-md document.md --launch-options '{"args": ["--no-sandbox"]}'
 ```
 
 ### Encoding Issues
@@ -508,6 +508,6 @@ markpdf document.md --launch-options '{"args": ["--no-sandbox"]}'
 Specify encoding explicitly:
 
 ```bash
-markpdf document.md --md-file-encoding utf-8
+pdfify-md document.md --md-file-encoding utf-8
 ```
 

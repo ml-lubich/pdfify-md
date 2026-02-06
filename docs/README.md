@@ -1,6 +1,6 @@
-# markpdf Documentation
+# pdfify-md Documentation
 
-Welcome to the markpdf documentation. This directory contains comprehensive documentation about the architecture, system design, CLI interface, and user guides for the markpdf tool.
+Welcome to the pdfify-md documentation. This directory contains comprehensive documentation about the architecture, system design, CLI interface, and user guides for the pdfify-md tool.
 
 ## 📋 Table of Contents
 
@@ -24,13 +24,13 @@ Welcome to the markpdf documentation. This directory contains comprehensive docu
 
 #### [Quick Start Guide](./user-guide/QUICKSTART.md)
 
-Get started quickly with markpdf. Includes:
+Get started quickly with pdfify-md. Includes:
 - Installation instructions
 - Basic usage examples
 - Common commands
 - Development setup
 
-**Start here** if you're new to markpdf.
+**Start here** if you're new to pdfify-md.
 
 #### [Usage Guide](./user-guide/USAGE.md)
 
@@ -46,7 +46,7 @@ Detailed usage instructions covering:
 
 #### [Architecture Documentation](./ARCHITECTURE.md)
 
-Comprehensive overview of the markpdf architecture, including:
+Comprehensive overview of the pdfify-md architecture, including:
 - Architecture principles and design goals
 - System layers and their responsibilities
 - Data flow and component interactions
@@ -119,7 +119,7 @@ Comprehensive test coverage documentation including:
 
 ### Code Examples
 
-All code examples use TypeScript and assume you're working within the markpdf codebase.
+All code examples use TypeScript and assume you're working within the pdfify-md codebase.
 
 ### File Paths
 
@@ -158,5 +158,5 @@ If you have questions about the documentation or need clarification:
 
 ## Version Information
 
-This documentation corresponds to markpdf version 6.0.0. Some details may change in future versions.
+This documentation corresponds to pdfify-md version 6.0.0. Some details may change in future versions.
 

@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-Get started with markpdf in minutes. This guide covers the essential commands and features you need to know.
+Get started with pdfify-md in minutes. This guide covers the essential commands and features you need to know.
 
 ## 📋 Table of Contents
 
@@ -27,8 +27,8 @@ npm install md-pdf
 ### For development
 
 ```bash
-git clone https://github.com/ml-lubich/markpdf.git
-cd markpdf
+git clone https://github.com/ml-lubich/pdfify-md.git
+cd pdfify-md
 npm install
 npm run build
 npm link

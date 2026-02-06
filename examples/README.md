@@ -1,6 +1,6 @@
-# markpdf Examples
+# pdfify-md Examples
 
-This directory contains example markdown files demonstrating various features of markpdf.
+This directory contains example markdown files demonstrating various features of pdfify-md.
 
 ## Available Examples
 
@@ -18,7 +18,7 @@ Comprehensive example showcasing various Mermaid diagram types:
 
 **To generate PDF:**
 ```bash
-markpdf examples/demo-mermaid.md
+pdfify-md examples/demo-mermaid.md
 ```
 
 ### [Simple Test Example](./test-simple.md)
@@ -27,7 +27,7 @@ Basic markdown example for quick testing and getting started.
 
 **To generate PDF:**
 ```bash
-markpdf examples/test-simple.md
+pdfify-md examples/test-simple.md
 ```
 
 ## More Examples
@@ -40,10 +40,10 @@ For additional examples, check the test files in [`../src/test/`](../src/test/):
 
 ## Getting Started
 
-1. Install markpdf (see main [README.md](../README.md))
+1. Install pdfify-md (see main [README.md](../README.md))
 2. Run an example:
    ```bash
-   markpdf examples/demo-mermaid.md
+   pdfify-md examples/demo-mermaid.md
    ```
 3. Check the generated PDF in the same directory!
 
@@ -66,6 +66,6 @@ For additional examples, check the test files in [`../src/test/`](../src/test/):
    ````
 2. Convert to PDF:
    ```bash
-   markpdf your-file.md
+   pdfify-md your-file.md
    ```
 

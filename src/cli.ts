@@ -3,7 +3,7 @@
 /**
  * CLI Entry Point
  *
- * This is the main entry point for the markpdf command-line tool.
+ * This is the main entry point for the pdfify-md command-line tool.
  * It parses arguments and delegates to CliService for execution.
  */
 
@@ -14,7 +14,7 @@ import { CliService } from './lib/cli/CliService.js';
 
 /**
  * Parse CLI arguments and flags.
- * Supports all markpdf command-line options.
+ * Supports all pdfify-md command-line options.
  */
 export const cliFlags = arg({
 	'--help': Boolean,

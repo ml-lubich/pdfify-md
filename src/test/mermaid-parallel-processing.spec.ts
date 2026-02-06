@@ -2,7 +2,7 @@
  * Tests for Parallel Processing Scenarios
  *
  * Tests that Mermaid chart processing works correctly when multiple
- * markpdf jobs run simultaneously, ensuring no file conflicts occur.
+ * pdfify-md jobs run simultaneously, ensuring no file conflicts occur.
  */
 
 import { promises as fs } from 'node:fs';

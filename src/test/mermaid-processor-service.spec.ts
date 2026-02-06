@@ -171,7 +171,7 @@ test('processCharts should handle markdown with mixed Mermaid and non-Mermaid bl
 
 test('processCharts should handle markdown with only regular code blocks', async (t) => {
 	const processor = new MermaidProcessorService();
-	const markdown = `# Code Examples\n\n\`\`\`bash\nnpm install markpdf\n\`\`\`\n\n\`\`\`yaml\nname: markpdf\nversion: 1.0.0\n\`\`\`\n\nNo Mermaid here!`;
+	const markdown = `# Code Examples\n\n\`\`\`bash\nnpm install pdfify-md\n\`\`\`\n\n\`\`\`yaml\nname: pdfify-md\nversion: 1.0.0\n\`\`\`\n\nNo Mermaid here!`;
 	const result = await processor.processCharts(markdown, browser, process.cwd());
 
 	t.is(result.processedMarkdown, markdown);

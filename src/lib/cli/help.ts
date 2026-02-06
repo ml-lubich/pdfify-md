@@ -5,93 +5,85 @@
 
 import chalk from 'chalk';
 
+const banner = chalk.cyan(`
+ ███████████  ██████████   ███████████ █████ ███████████ █████ █████            ██████   ██████ ██████████
+░░███░░░░░███░░███░░░░███ ░░███░░░░░░█░░███ ░░███░░░░░░█░░███ ░░███            ░░██████ ██████ ░░███░░░░███
+ ░███    ░███ ░███   ░░███ ░███   █ ░  ░███  ░███   █ ░  ░░███ ███              ░███░█████░███  ░███   ░░███
+ ░██████████  ░███    ░███ ░███████    ░███  ░███████     ░░█████    ██████████ ░███░░███ ░███  ░███    ░███
+ ░███░░░░░░   ░███    ░███ ░███░░░█    ░███  ░███░░░█      ░░███    ░░░░░░░░░░  ░███ ░░░  ░███  ░███    ░███
+ ░███         ░███    ███  ░███  ░     ░███  ░███  ░        ░███                ░███      ░███  ░███    ███
+ █████        ██████████   █████       █████ █████          █████               █████     █████ ██████████
+░░░░░        ░░░░░░░░░░   ░░░░░       ░░░░░ ░░░░░          ░░░░░               ░░░░░     ░░░░░ ░░░░░░░░░░
+`);
+
 const helpText = `
-  ${chalk.cyan(`
-███╗   ███╗ █████╗ ██████╗ ██╗  ██╗██████╗ ██████╗ ███████╗
-████╗ ████║██╔══██╗██╔══██╗██║ ██╔╝██╔══██╗██╔══██╗██╔════╝
-██╔████╔██║███████║██████╔╝█████╔╝ ██████╔╝██║  ██║█████╗  
-██║╚██╔╝██║██╔══██║██╔══██╗██╔═██╗ ██╔═══╝ ██║  ██║██╔══╝  
-██║ ╚═╝ ██║██║  ██║██║  ██║██║  ██╗██║     ██████╔╝██║     
-╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═════╝ ╚═╝     
-                                                           
-`)}
-  ${chalk.bold('$ pdfify-md')} [options] path/to/file.md
+${banner}
+  ${chalk.bold('Usage:')} ${chalk.cyan('pdfify-md')} [options] path/to/file.md
 
-  ${chalk.dim.underline.bold('Options:')}
+  ${chalk.dim('─').repeat(60)}
+  ${chalk.bold('Options:')}
+  ${chalk.dim('─').repeat(60)}
 
-    -h, --help ${chalk.dim('...............')} Output usage information
-    -v, --version ${chalk.dim('............')} Output version
-    -w, --watch ${chalk.dim('..............')} Watch the current file(s) for changes
-		--watch-options ${chalk.dim('..........')} Options for Chokidar's watch call
-    --basedir ${chalk.dim('................')} Base directory to be served by the file server
-    --stylesheet ${chalk.dim('.............')} Path to a local or remote stylesheet (can be passed multiple times)
-    --css ${chalk.dim('....................')} String of styles
-    --document-title ${chalk.dim('.........')} Name of the HTML Document.
-    --body-class ${chalk.dim('.............')} Classes to be added to the body tag (can be passed multiple times)
-    --page-media-type ${chalk.dim('........')} Media type to emulate the page with (default: screen)
-    --highlight-style ${chalk.dim('........')} Style to be used by highlight.js (default: github)
-    --marked-options ${chalk.dim('.........')} Set custom options for marked (as a JSON string)
-    --html-pdf-options ${chalk.dim('........')} Set custom options for HTML to PDF conversion (as a JSON string)
-    --pdf-options ${chalk.dim('............')} Set custom options for the generated PDF (as a JSON string)
-    --launch-options ${chalk.dim('.........')} Set custom launch options for Puppeteer
-		--gray-matter-options ${chalk.dim('....')} Set custom options for gray-matter
-    --port ${chalk.dim('...................')} Set the port to run the http server on
-    --md-file-encoding ${chalk.dim('.......')} Set the file encoding for the markdown file
-    --stylesheet-encoding ${chalk.dim('....')} Set the file encoding for the stylesheet
-    --as-html ${chalk.dim('................')} Output as HTML instead
-    --config-file ${chalk.dim('............')} Path to a JSON or JS configuration file
-    --devtools ${chalk.dim('...............')} Open the browser with devtools instead of creating PDF
-    --mermaid-horizontal-width ${chalk.dim('..')} Max width for horizontal charts (default: 1600)
-    --mermaid-vertical-width ${chalk.dim('....')} Max width for vertical charts (default: 250)
-    --mermaid-max-height ${chalk.dim('.......')} Max height for charts (default: 200)
-    -r, --mermaid-resolution ${chalk.dim('....')} Image resolution scale factor (default: 8, any positive number)
-    -t, --mermaid-timeout ${chalk.dim('.......')} Mermaid render timeout in ms (default: 60000)
+  -h, --help                  Output usage information
+  -v, --version               Output version
+  -w, --watch                 Watch the current file(s) for changes
+  --watch-options             Options for Chokidar's watch call
+  --basedir                   Base directory to be served by the file server
+  --stylesheet                Path to a local or remote stylesheet (repeatable)
+  --css                       Inline CSS string
+  --document-title            HTML document title
+  --body-class                Class(es) for the body tag (repeatable)
+  --page-media-type           Page media type (default: screen)
+  --highlight-style           highlight.js theme (default: github)
+  --marked-options            Custom options for marked (JSON string)
+  --html-pdf-options          HTML-to-PDF options (JSON string)
+  --pdf-options               PDF options (JSON string)
+  --launch-options            Puppeteer launch options
+  --gray-matter-options       gray-matter options
+  --port                      HTTP server port
+  --md-file-encoding          Markdown file encoding
+  --stylesheet-encoding      Stylesheet encoding
+  --as-html                   Output HTML instead of PDF
+  --config-file               Path to JSON/JS config file
+  --devtools                  Open browser devtools instead of generating PDF
+  --mermaid-horizontal-width  Max width for horizontal charts (default: 1600)
+  --mermaid-vertical-width    Max width for vertical charts (default: 250)
+  --mermaid-max-height        Max height for charts (default: 200)
+  -r, --mermaid-resolution    Mermaid image resolution (default: 8)
+  -t, --mermaid-timeout       Mermaid render timeout in ms (default: 60000)
 
-  ${chalk.dim.underline.bold('Examples:')}
+  ${chalk.dim('─').repeat(60)}
+  ${chalk.bold('Examples:')}
+  ${chalk.dim('─').repeat(60)}
 
-  ${chalk.gray('–')} Convert ./file.md and save to ./file.pdf
+  Convert a file:
+    ${chalk.cyan('pdfify-md file.md')}
 
-    ${chalk.cyan('$ pdfify-md file.md')}
+  All .md in directory:
+    ${chalk.cyan('pdfify-md ./*.md')}
 
-  ${chalk.gray('–')} Convert all markdown files in current directory
+  Recursive:
+    ${chalk.cyan('pdfify-md ./**/*.md')}
 
-    ${chalk.cyan('$ pdfify-md ./*.md')}
+  Watch mode:
+    ${chalk.cyan('pdfify-md ./*.md -w')}
+    ${chalk.cyan('pdfify-md ./*.md --watch --watch-options \'{ "atomic": true }\'')}
 
-  ${chalk.gray('–')} Convert all markdown files in current directory recursively
+  With base directory:
+    ${chalk.cyan('pdfify-md path/to/file.md --basedir path')}
 
-    ${chalk.cyan('$ pdfify-md ./**/*.md')}
+  Styling:
+    ${chalk.cyan('pdfify-md file.md --stylesheet custom-markdown.css')}
+    ${chalk.cyan('pdfify-md file.md --highlight-style monokai')}
 
-  ${chalk.gray('–')} Convert and enable watch mode
+  Custom PDF:
+    ${chalk.cyan('pdfify-md file.md --pdf-options \'{ "format": "Letter" }\'')}
 
-    ${chalk.cyan('$ pdfify-md ./*.md -w')}
+  Output HTML:
+    ${chalk.cyan('pdfify-md file.md --as-html')}
 
-  ${chalk.gray('–')} Convert and enable watch mode with custom options
-
-    ${chalk.cyan('$ pdfify-md ./*.md --watch --watch-options \'{ "atomic": true }\'')}
-
-  ${chalk.gray('–')} Convert path/to/file.md with a different base directory
-
-    ${chalk.cyan('$ pdfify-md path/to/file.md --basedir path')}
-
-  ${chalk.gray('–')} Convert file.md using custom-markdown.css
-
-    ${chalk.cyan('$ pdfify-md file.md --stylesheet custom-markdown.css')}
-
-  ${chalk.gray('–')} Convert file.md using the Monokai theme for code highlighting
-
-    ${chalk.cyan('$ pdfify-md file.md --highlight-style monokai')}
-
-  ${chalk.gray('–')} Convert file.md using custom page options
-
-    ${chalk.cyan('$ pdfify-md file.md --pdf-options \'{ "format": "Letter" }\'')}
-
-  ${chalk.gray('–')} Convert file.md but save the intermediate HTML instead
-
-    ${chalk.cyan('$ pdfify-md file.md --as-html')}
-
-  ${chalk.gray('–')} Convert with custom Mermaid chart sizes
-
-    ${chalk.cyan('$ pdfify-md file.md --mermaid-horizontal-width 1000 -r 10')}
+  Mermaid chart size:
+    ${chalk.cyan('pdfify-md file.md --mermaid-horizontal-width 1000 -r 10')}
 `;
 
 export const help = (): void => console.log(helpText);

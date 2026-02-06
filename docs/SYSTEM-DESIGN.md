@@ -2,7 +2,7 @@
 
 ## System Overview
 
-markpdf is a CLI tool and library for converting Markdown documents to PDF format. It uses a multi-layered architecture with clear separation of concerns, dependency injection, and extensive configurability.
+pdfify-md is a CLI tool and library for converting Markdown documents to PDF format. It uses a multi-layered architecture with clear separation of concerns, dependency injection, and extensive configurability.
 
 ## 📋 Table of Contents
 

@@ -411,17 +411,16 @@ npm test
 ### Run Specific Test Files
 
 ```bash
-# Mermaid tests
-npx ava src/test/mermaid-processor-service.spec.ts src/test/mermaid-edge-cases.spec.ts --timeout=2m
+# E2E only (quick, no browser)
+npm run test:e2e
 
-# Converter tests
-npx ava src/test/converter-service.spec.ts src/test/converter-service-edge-cases.spec.ts --timeout=2m
+# Recursive CLI (heavy, run separately)
+npm run test:recursive
 
-# CLI tests
-npx ava src/test/cli.spec.ts src/test/cli-service.spec.ts src/test/cli-edge-cases.spec.ts
-
-# Domain tests
-npx ava src/test/domain/*.spec.ts
+# Single file (default per-test timeout: 45s)
+npx ava src/test/mermaid-processor-service.spec.ts
+npx ava src/test/converter-service.spec.ts
+npx ava src/test/domain/result.spec.ts
 ```
 
 ### Run Tests with Coverage
@@ -433,10 +432,11 @@ npm test
 
 ### Test Timeouts
 
-Some tests (especially Mermaid processing) may take longer:
-- Default timeout: 10s
-- Mermaid tests: 2m timeout recommended
-- Use `--timeout=2m` for Mermaid-related tests
+The full suite (including e2e) is designed to complete in under 5 minutes:
+- **Default per-test timeout**: 45s (no test may stall longer; overridable per test where needed)
+- **Full suite**: Single `npm test` run; integration and e2e included
+- **test:e2e**: E2E install checks only (~30s)
+- **test:recursive**: Recursive CLI tests (90s timeout)
 
 ## Test Organization
 

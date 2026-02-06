@@ -39,7 +39,7 @@ test('should NOT process markdown with no Mermaid blocks - plain text only', asy
 
 test('should NOT process markdown with only non-Mermaid code blocks', async (t) => {
 	const processor = new MermaidProcessorService();
-	const markdown = `# Code Examples\n\n\`\`\`javascript\nconsole.log('hello');\n\`\`\`\n\n\`\`\`python\ndef hello():\n    print("world")\n\`\`\`\n\n\`\`\`bash\nnpm install markpdf\n\`\`\``;
+	const markdown = `# Code Examples\n\n\`\`\`javascript\nconsole.log('hello');\n\`\`\`\n\n\`\`\`python\ndef hello():\n    print("world")\n\`\`\`\n\n\`\`\`bash\nnpm install pdfify-md\n\`\`\``;
 	const result = await processor.processCharts(markdown, browser, process.cwd());
 
 	t.is(result.processedMarkdown, markdown);

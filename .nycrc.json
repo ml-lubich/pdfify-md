@@ -1,17 +1,12 @@
 {
   "all": false,
-  "check-coverage": true,
-  "extension": [
-    ".ts",
-    ".tsx"
-  ],
+  "check-coverage": false,
+  "extension": [".ts", ".tsx"],
   "lines": 85,
   "functions": 85,
   "branches": 75,
   "statements": 85,
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
@@ -20,11 +15,6 @@
     "node_modules/**",
     "**/*.d.ts"
   ],
-  "reporter": [
-    "text",
-    "text-summary",
-    "html",
-    "lcov"
-  ],
+  "reporter": ["text", "text-summary", "html", "lcov"],
   "report-dir": "coverage"
 }

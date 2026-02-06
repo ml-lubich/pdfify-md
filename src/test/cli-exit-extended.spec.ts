@@ -16,7 +16,7 @@ import { defaultConfig } from '../lib/config.js';
 
 // Helper to create a temporary markdown file
 async function createTempMarkdown(content: string, filename?: string): Promise<string> {
-	const tempDir = join(tmpdir(), 'markpdf-test-extended');
+	const tempDir = join(tmpdir(), 'pdfify-md-test-extended');
 	await fs.mkdir(tempDir, { recursive: true });
 	const filePath = join(tempDir, filename || `test-${Date.now()}.md`);
 	await fs.writeFile(filePath, content, 'utf-8');

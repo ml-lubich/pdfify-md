@@ -32,10 +32,12 @@
     "clean": "rm -rf dist",
     "prepack": "npm run clean && npm run build",
     "lint": "xo",
-    "test": "nyc ava src/test/lib.spec.ts src/test/help.spec.ts src/test/serve-dir.spec.ts src/test/validate-node-version.spec.ts src/test/config-service.spec.ts src/test/file-service.spec.ts src/test/markdown-parser-service.spec.ts src/test/get-marked-edge-cases.spec.ts src/test/server-service.spec.ts src/test/hash-utils.spec.ts src/test/domain/result.spec.ts src/test/domain/logger.spec.ts src/test/domain/errors.spec.ts src/test/domain/entities.spec.ts src/test/cli-folder-support.spec.ts src/test/folder-support-edge-cases.spec.ts --timeout=2m && ava src/test/cli.spec.ts src/test/cli-service.spec.ts src/test/cli-edge-cases.spec.ts src/test/cli-usage-edge-cases.spec.ts src/test/output-path-verification.spec.ts src/test/md-to-pdf.spec.ts src/test/generate-output.spec.ts src/test/output-generator-service.spec.ts src/test/output-generator-edge-cases.spec.ts src/test/process-mermaid.spec.ts src/test/mermaid-processor-service.spec.ts src/test/mermaid-quality-verification.spec.ts src/test/mermaid-parallel-processing.spec.ts src/test/mermaid-image-generation.spec.ts src/test/edge-cases-negative.spec.ts src/test/converter-service.spec.ts src/test/converter-service-edge-cases.spec.ts src/test/performance.spec.ts --timeout=3m",
+    "test": "nyc ava src/test/lib.spec.ts src/test/help.spec.ts src/test/serve-dir.spec.ts src/test/validate-node-version.spec.ts src/test/config-service.spec.ts src/test/file-service.spec.ts src/test/markdown-parser-service.spec.ts src/test/get-marked-edge-cases.spec.ts src/test/server-service.spec.ts src/test/hash-utils.spec.ts src/test/domain/result.spec.ts src/test/domain/logger.spec.ts src/test/domain/errors.spec.ts src/test/domain/entities.spec.ts src/test/cli-folder-support.spec.ts src/test/folder-support-edge-cases.spec.ts src/test/cli.spec.ts src/test/cli-service.spec.ts src/test/cli-edge-cases.spec.ts src/test/cli-usage-edge-cases.spec.ts src/test/cli-exit.spec.ts src/test/cli-exit-extended.spec.ts src/test/output-path-verification.spec.ts src/test/md-to-pdf.spec.ts src/test/generate-output.spec.ts src/test/output-generator-service.spec.ts src/test/output-generator-edge-cases.spec.ts src/test/output-generator-timeout.spec.ts src/test/process-mermaid.spec.ts src/test/mermaid-processor-service.spec.ts src/test/mermaid-quality-verification.spec.ts src/test/mermaid-parallel-processing.spec.ts src/test/mermaid-image-generation.spec.ts src/test/mermaid-edge-cases.spec.ts src/test/edge-cases-negative.spec.ts src/test/converter-service.spec.ts src/test/converter-service-edge-cases.spec.ts src/test/performance.spec.ts src/test/e2e-clean-install.spec.ts --force-exit",
     "test:lint": "xo",
     "test:type-check": "tsc -p tsconfig.test.json --noEmit",
-    "test:recursive": "ava src/test/cli-recursive-comprehensive.spec.ts --timeout=2m",
+    "test:recursive": "ava src/test/cli-recursive-comprehensive.spec.ts --timeout=90s",
+    "test:e2e": "ava src/test/e2e-clean-install.spec.ts --timeout=30s --force-exit",
+    "test:fast": "ava src/test/lib.spec.ts src/test/help.spec.ts src/test/serve-dir.spec.ts src/test/validate-node-version.spec.ts src/test/config-service.spec.ts src/test/file-service.spec.ts src/test/markdown-parser-service.spec.ts src/test/get-marked-edge-cases.spec.ts src/test/server-service.spec.ts src/test/hash-utils.spec.ts src/test/domain/result.spec.ts src/test/domain/logger.spec.ts src/test/domain/errors.spec.ts src/test/domain/entities.spec.ts src/test/cli-folder-support.spec.ts src/test/folder-support-edge-cases.spec.ts --timeout=30s --force-exit",
     "release": "npm test && npm version patch && git push --follow-tags origin main && npm publish",
     "loc": "npx cloc src --exclude-dir=test --by-file",
     "test:examples": "node dist/cli.js examples/*.md"
@@ -47,11 +49,11 @@
   "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ml-lubich/pdify-md.git"
+    "url": "https://github.com/ml-lubich/pdfify-md.git"
   },
-  "homepage": "https://github.com/ml-lubich/pdify-md#readme",
+  "homepage": "https://github.com/ml-lubich/pdfify-md#readme",
   "bugs": {
-    "url": "https://github.com/ml-lubich/pdify-md/issues"
+    "url": "https://github.com/ml-lubich/pdfify-md/issues"
   },
   "dependencies": {
     "arg": "^5.0.2",
@@ -93,7 +95,8 @@
       "./test-setup.js"
     ],
     "verbose": true,
-    "timeout": "5m"
+    "timeout": "90s",
+    "forceExit": true
   },
   "ts-node": {
     "project": "./tsconfig.test.json",

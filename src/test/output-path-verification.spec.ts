@@ -39,7 +39,7 @@ async function cleanupTempFile(filePath: string): Promise<void> {
 
 test('getOutputFilePath should preserve directory structure', async (t) => {
 	const testCases = [
-		{ input: 'file.md', expectedDir: '.' },
+		{ input: 'file.md', expectedDir: '' },
 		{ input: './file.md', expectedDir: '.' },
 		{ input: 'docs/file.md', expectedDir: 'docs' },
 		{ input: './docs/file.md', expectedDir: './docs' },

@@ -39,7 +39,7 @@ test('CliService should show help when --help flag is provided', async (t) => {
 	try {
 		await cliService.run({ '--help': true, _: [] });
 		t.truthy(output);
-		t.true(output.includes('markpdf'));
+		t.true(output.includes('pdfify-md'));
 	} finally {
 		console.log = originalLog;
 	}
@@ -57,7 +57,7 @@ test('CliService should show help when no input provided', async (t) => {
 	try {
 		await cliService.run({ _: [] });
 		t.truthy(output);
-		t.true(output.includes('markpdf'));
+		t.true(output.includes('pdfify-md'));
 	} finally {
 		console.log = originalLog;
 	}
