@@ -307,6 +307,25 @@ npm test
 npm run lint
 ```
 
+### Publishing to npm
+
+If you get **403 (Two-factor authentication required)** you have two options:
+
+- **Option A – Publish with a token (no code needed after setup):**
+  1. Open **https://www.npmjs.com** and log in (use backup codes or account recovery if you lost your 2FA device).
+  2. Go to **Access Tokens** (click your avatar → Access Tokens), then **Generate New Token**.
+  3. Choose **Granular Access Token**. Name it e.g. `pdfify-md-publish`. Under **Packages** pick **Read and write** for the packages you publish. If you see **Bypass two-factor authentication**, turn it **on** so publish from the CLI doesn’t ask for a code.
+  4. Generate the token and copy it (it’s shown only once).
+  5. In your terminal, run once (paste your token instead of `YOUR_TOKEN`):
+     ```bash
+     npm config set //registry.npmjs.org/:_authToken YOUR_TOKEN
+     ```
+  6. After that you can run `npm publish` with no code.
+
+- **Option B – Publish with a one-time code:** If you have your authenticator app, use the current 6-digit code: `npm publish --otp=YOUR_6_DIGITS`, or run `./scripts/npm-publish-with-otp.sh`.
+
+To push to GitHub then publish: `./scripts/release-push-and-publish.sh`.
+
 ## 📝 Examples
 
 ### Quick Examples
