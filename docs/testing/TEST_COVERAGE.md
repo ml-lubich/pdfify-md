@@ -417,7 +417,10 @@ npm run test:e2e
 # Recursive CLI (heavy, run separately)
 npm run test:recursive
 
-# Single file (default per-test timeout: 45s)
+# Fast unit-only run (~1 min)
+npm run test:fast
+
+# Single file (default per-test timeout: 90s)
 npx ava src/test/mermaid-processor-service.spec.ts
 npx ava src/test/converter-service.spec.ts
 npx ava src/test/domain/result.spec.ts
@@ -430,11 +433,13 @@ npm test
 # Coverage reports generated in coverage/ directory
 ```
 
-### Test Timeouts
+### Test Timeouts and anti-stall
 
 The full suite (including e2e) is designed to complete in under 5 minutes:
-- **Default per-test timeout**: 45s (no test may stall longer; overridable per test where needed)
-- **Full suite**: Single `npm test` run; integration and e2e included
+- **Default per-test timeout**: 90s (overridable per test where needed)
+- **forceExit**: Enabled so the process exits after tests even if handles remain (no stalling)
+- **Full suite**: Single `npm test` run; integration and e2e included; coverage reported but does not fail the run
+- **test:fast**: Unit tests only, ~30s timeout, for quick feedback
 - **test:e2e**: E2E install checks only (~30s)
 - **test:recursive**: Recursive CLI tests (90s timeout)
 
