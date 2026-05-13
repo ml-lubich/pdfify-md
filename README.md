@@ -530,3 +530,20 @@ mindmap
       package.json
       tsconfig.json
 ```
+
+
+## 📊 Code composition
+
+File-type breakdown of source under this repo (skips `.git`, `node_modules`, build caches, lockfiles).
+
+```mermaid
+pie showData title File-type composition of pdfify-md (143 files)
+    "TypeScript" : 99
+    "Markdown" : 20
+    "Other" : 11
+    "JSON" : 4
+    "Image" : 3
+    "Shell" : 2
+    "JavaScript" : 2
+    "SVG image" : 2
+```
