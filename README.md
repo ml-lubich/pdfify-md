@@ -57,6 +57,8 @@ See the stunning Mermaid diagrams that can be rendered directly in your PDFs:
 ## 📋 Table of Contents
 
 - [Features](#-features)
+- [Conversion pipeline (algorithm)](#-conversion-pipeline-algorithm)
+- [Watch mode (sequence)](#-watch-mode-sequence)
 - [Quick Start](#-quick-start)
 - [Documentation](#-documentation)
 - [Examples](#-examples)
@@ -65,6 +67,45 @@ See the stunning Mermaid diagrams that can be rendered directly in your PDFs:
 - [Security](#-security-considerations)
 - [Contributing](#-contributing)
 - [License](#-license)
+
+## 🔄 Conversion pipeline (algorithm)
+
+```mermaid
+flowchart LR
+    A([input.md])
+    B["parse front matter<br/>YAML config"]
+    C["markdown-it render<br/>+ syntax highlight"]
+    D{"contains mermaid?"}
+    E["render diagrams<br/>via headless browser"]
+    F["inline as &lt;img&gt;"]
+    G["apply custom CSS"]
+    H["Puppeteer print to PDF"]
+    I["write output.pdf / .html"]
+    Z([done])
+    A --> B --> C --> D
+    D -- yes --> E --> F --> G --> H --> I --> Z
+    D -- no  --> G --> H --> I --> Z
+```
+
+## 👁 Watch mode (sequence)
+
+```mermaid
+sequenceDiagram
+    participant U as user
+    participant CLI as pdfify-md --watch
+    participant W as chokidar
+    participant P as pipeline
+    participant FS as filesystem
+
+    U->>CLI: pdfify-md docs/*.md --watch
+    CLI->>W: watch glob
+    loop on change
+        FS-->>W: file changed event
+        W->>P: convert(file)
+        P->>FS: write file.pdf
+        P-->>U: log success
+    end
+```
 
 ## 🚀 Quick Start
 
