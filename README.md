@@ -488,3 +488,45 @@ See the [LICENSE](LICENSE) file for full license terms.
 Made with ❤️ by [Misha Lubich](https://github.com/ml-lubich)
 
 </div>
+
+
+## 🗺️ Repository map
+
+Top-level layout of `pdfify-md` rendered as a Mermaid mindmap (auto-generated from the on-disk tree).
+
+```mermaid
+mindmap
+  root((pdfify-md))
+    assets/
+      css
+      mermaid1.png
+      mermaid2.png
+      mermaid3.png
+    docs/
+      ARCHITECTURE.md
+      CHART-CONFIGURATION.md
+      CLI-INTERFACE.md
+      README.md
+      SYSTEM-DESIGN.md
+      testing
+    examples/
+      README.md
+      demo-mermaid.html
+      demo-mermaid.md
+      demo-mermaid.pdf
+      kpi_db_schema_dimensional.md
+      mermaid_test.md
+    scripts/
+      npm-publish-with-otp.sh
+      release-push-and-publish.sh
+    src/
+      cli.ts
+      index.ts
+      lib
+      test
+    files
+      LICENSE
+      README.md
+      package.json
+      tsconfig.json
+```
