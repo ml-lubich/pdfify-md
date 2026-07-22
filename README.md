@@ -111,11 +111,21 @@ sequenceDiagram
 
 ### Installation
 
+#### Homebrew (macOS, Apple Silicon)
+
+```bash
+brew install ml-lubich/tap/pdfify-md
+```
+
+The formula bundles a matching Chrome for Testing, so Puppeteer works with no extra setup.
+
+#### npm
+
 ```bash
 npm install -g pdfify-md
 ```
 
-Or clone and install locally:
+#### From source
 
 ```bash
 git clone https://github.com/ml-lubich/pdfify-md.git
@@ -129,6 +139,8 @@ npm link
 ```bash
 npm install pdfify-md
 ```
+
+> Not a Python package — there is no `pip`/PyPI install. Use Homebrew or npm above.
 
 ### Basic Usage
 
