@@ -50,3 +50,6 @@ PROJECT_STATUS.md
 # OS files
 Thumbs.db
 .DS_Store
+
+# OMC session state (local only)
+.omc/
