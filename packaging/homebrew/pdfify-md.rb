@@ -31,8 +31,10 @@ class PdfifyMd < Formula
     ENV["PUPPETEER_SKIP_DOWNLOAD"] = "1"
     system "npm", "install", *std_npm_args
 
+    # `stage` strips the single top-level chrome-mac-arm64/ dir, so the .app
+    # lands directly under libexec/chrome/.
     resource("chrome").stage { (libexec/"chrome").install Dir["*"] }
-    chrome = libexec/"chrome/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+    chrome = libexec/"chrome/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
 
     (bin/"pdfify-md").write_env_script(
       libexec/"bin/pdfify-md",
