@@ -111,6 +111,10 @@ sequenceDiagram
 
 ### Installation
 
+`pdfify-md` runs on **macOS, Linux, and Windows**. It needs a Chrome/Chromium
+binary for Puppeteer to drive — pick the option for your platform below and
+that's handled for you:
+
 #### Homebrew (macOS, Apple Silicon)
 
 ```bash
@@ -119,13 +123,22 @@ brew install ml-lubich/tap/pdfify-md
 
 The formula bundles a matching Chrome for Testing, so Puppeteer works with no extra setup.
 
-#### npm
+#### npm (macOS, Linux, Windows)
 
 ```bash
 npm install -g pdfify-md
 ```
 
-#### From source
+Requires Node.js ≥18. Puppeteer downloads its own matching Chrome for Testing
+during `npm install`, so this works out of the box on any OS — including
+Windows — with no separate Chrome install. On minimal/headless Linux (Docker,
+CI), Chrome's shared-library dependencies may not be preinstalled; if launch
+fails, install the OS packages listed in Puppeteer's
+[troubleshooting guide](https://pptr.dev/troubleshooting). To point at an
+existing system Chrome/Chromium instead of the downloaded one, pass
+`--launch-options '{"executablePath":"/path/to/chrome"}'`.
+
+#### From source (any OS)
 
 ```bash
 git clone https://github.com/ml-lubich/pdfify-md.git
@@ -133,6 +146,8 @@ cd pdfify-md
 npm install
 npm link
 ```
+
+Same Chrome-download behavior as the npm install above.
 
 #### As a Dependency
 
