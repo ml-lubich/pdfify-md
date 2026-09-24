@@ -203,8 +203,8 @@ flowchart TD
 Control chart sizes and resolution. **These parameters do NOT conflict** - they work together:
 
 - `--mermaid-horizontal-width` - Max width for horizontal charts (default: 1600px)
-- `--mermaid-vertical-width` - Max width for vertical charts (default: 250px)  
-- `--mermaid-max-height` - Max height for vertical charts (default: 200px)
+- `--mermaid-vertical-width` - Max width for vertical charts (default: 720px)  
+- `--mermaid-max-height` - Max height for vertical charts (default: 720px)
 - `-r, --mermaid-resolution` - Image quality (default: 8, any positive number) - **does NOT change visual size, only PNG sharpness**
 
 ```bash

@@ -12,17 +12,16 @@
    - Does NOT affect vertical charts
    - Increased significantly for much better readability
 
-2. **`--mermaid-vertical-width`** (default: 250px)
+2. **`--mermaid-vertical-width`** (default: 720px)
    - Only applies to **vertical charts** (tall charts like flowcharts)
    - Sets maximum width - if chart is wider, it scales down
    - Does NOT affect horizontal charts
-   - Reduced significantly to make vertical charts way smaller
+   - Sized to a printed page column so top-down charts stay readable
 
-3. **`--mermaid-max-height`** (default: 200px)
+3. **`--mermaid-max-height`** (default: 720px)
    - Only applies to **vertical charts** (prevents them from spanning multiple pages)
    - Horizontal charts are NOT height-constrained
-   - Works together with `vertical-width` to keep vertical charts compact
-   - Reduced significantly to make vertical charts way smaller
+   - Works together with `vertical-width` to keep a vertical chart on one page column
 
 4. **`--mermaid-resolution`** (default: 8, any positive number)
    - **Does NOT change the visual size or shape of charts**

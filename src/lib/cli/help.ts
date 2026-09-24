@@ -45,8 +45,8 @@ ${banner}
   --config-file               Path to JSON/JS config file
   --devtools                  Open browser devtools instead of generating PDF
   --mermaid-horizontal-width  Max width for horizontal charts (default: 1600)
-  --mermaid-vertical-width    Max width for vertical charts (default: 250)
-  --mermaid-max-height        Max height for charts (default: 200)
+  --mermaid-vertical-width    Max width for vertical charts (default: 720)
+  --mermaid-max-height        Max height for charts (default: 720)
   -r, --mermaid-resolution    Mermaid image resolution (default: 8)
   -t, --mermaid-timeout       Mermaid render timeout in ms (default: 60000)
 

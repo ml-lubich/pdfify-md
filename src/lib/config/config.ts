@@ -189,12 +189,12 @@ type BasicConfig = {
 		horizontal_width?: number;
 		/**
 		 * Maximum width for vertical charts (tall charts like vertical flowcharts).
-		 * Default: 250
+		 * Default: 720
 		 */
 		vertical_width?: number;
 		/**
 		 * Maximum height for charts (prevents vertical charts from spanning pages).
-		 * Default: 200
+		 * Default: 720
 		 */
 		max_height?: number;
 		/**

@@ -338,7 +338,7 @@ export class MermaidProcessorService implements IMermaidProcessor {
 ${mermaidCode}
 	</div>
 	<script>
-		mermaid.initialize({ startOnLoad: true, theme: 'default' });
+		mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
 	</script>
 </body>
 </html>`;

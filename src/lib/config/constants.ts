@@ -15,7 +15,7 @@ export const MERMAID_CONSTANTS = {
 	/**
 	 * CDN URL for Mermaid.js library.
 	 */
-	CDN_URL: 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js',
+	CDN_URL: 'https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js',
 
 	/**
 	 * Timeout for Mermaid rendering in milliseconds.
@@ -46,18 +46,18 @@ export const MERMAID_CONSTANTS = {
 	/**
 	 * Maximum pixel width for vertical charts (tall charts like vertical flowcharts).
 	 * Vertical charts need width constraint to fit on page.
-	 * Reduced significantly to make vertical charts way smaller.
+	 * Sized to a printed page column so a top-down flowchart stays readable.
 	 */
-	MAX_VERTICAL_CHART_WIDTH_PX: 250,
+	MAX_VERTICAL_CHART_WIDTH_PX: 720,
 
 	/**
 	 * Maximum pixel height for rendered Mermaid charts (visual size).
 	 * Prevents vertical flowcharts from taking multiple pages.
 	 * Charts taller than this will be scaled down while maintaining aspect ratio.
 	 * Only applies to vertical charts - horizontal charts are not height-constrained.
-	 * Reduced significantly to make vertical charts way smaller.
+	 * One page column, not a thumbnail.
 	 */
-	MAX_CHART_HEIGHT_PX: 200,
+	MAX_CHART_HEIGHT_PX: 720,
 
 	/**
 	 * Device scale factor for high-resolution screenshots.
